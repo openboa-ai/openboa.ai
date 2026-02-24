@@ -1,0 +1,246 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+}
+
+:root {
+  --radius: 0.75rem;
+
+  --boa-green-50: #eef7df;
+  --boa-green-100: #dff1c4;
+  --boa-green-200: #c9e69a;
+  --boa-green-300: #acd968;
+  --boa-green-400: #97cf45;
+  --boa-green-500: #8cc92a;
+  --boa-green-600: #67a525;
+  --boa-green-700: #478d24;
+  --boa-green-800: #163525;
+  --boa-green-900: #050d0a;
+
+  --boa-gray-50: #fef6e2;
+  --boa-gray-100: #ede5d4;
+  --boa-gray-200: #d7d1c8;
+  --boa-gray-300: #b8b3aa;
+  --boa-gray-400: #9aa09a;
+  --boa-gray-500: #768688;
+  --boa-gray-600: #5e6c67;
+  --boa-gray-700: #44504b;
+  --boa-gray-800: #2e3c38;
+  --boa-gray-900: #162d24;
+
+  --boa-sand-50: #fef6e2;
+  --boa-sand-100: #f7eccf;
+  --boa-sand-200: #eedcb6;
+  --boa-sand-300: #eddbb7;
+  --boa-sand-400: #e3cb9e;
+  --boa-sand-500: #d8be89;
+  --boa-sand-600: #cdae7b;
+  --boa-sand-700: #bdaa75;
+  --boa-sand-800: #9d8e61;
+  --boa-sand-900: #7a6e4d;
+
+  --boa-bg: var(--boa-sand-50);
+  --boa-surface: #fffdf7;
+  --boa-panel: var(--boa-sand-100);
+  --boa-text: var(--boa-gray-900);
+  --boa-muted: var(--boa-gray-600);
+  --boa-border: var(--boa-gray-200);
+  --boa-accent: var(--boa-green-500);
+  --boa-accent-strong: var(--boa-green-700);
+  --boa-grad-a: rgba(172, 217, 104, 0.42);
+  --boa-grad-b: rgba(238, 220, 182, 0.56);
+  --boa-grad-c: rgba(223, 241, 196, 0.35);
+
+  --background: var(--boa-bg);
+  --foreground: var(--boa-text);
+  --card: var(--boa-surface);
+  --card-foreground: var(--boa-text);
+  --popover: var(--boa-surface);
+  --popover-foreground: var(--boa-text);
+  --primary: var(--boa-accent);
+  --primary-foreground: var(--boa-green-900);
+  --secondary: var(--boa-panel);
+  --secondary-foreground: var(--boa-text);
+  --muted: var(--boa-panel);
+  --muted-foreground: var(--boa-muted);
+  --accent: var(--boa-sand-200);
+  --accent-foreground: var(--boa-text);
+  --destructive: #b42318;
+  --border: var(--boa-border);
+  --input: var(--boa-border);
+  --ring: var(--boa-accent-strong);
+}
+
+.dark {
+  --boa-bg: var(--boa-green-900);
+  --boa-surface: #0b1712;
+  --boa-panel: var(--boa-green-800);
+  --boa-text: var(--boa-sand-50);
+  --boa-muted: var(--boa-gray-300);
+  --boa-border: var(--boa-gray-800);
+  --boa-accent: var(--boa-green-600);
+  --boa-accent-strong: var(--boa-green-500);
+  --boa-grad-a: rgba(71, 141, 36, 0.38);
+  --boa-grad-b: rgba(22, 53, 37, 0.68);
+  --boa-grad-c: rgba(140, 201, 42, 0.22);
+
+  --background: var(--boa-bg);
+  --foreground: var(--boa-text);
+  --card: var(--boa-surface);
+  --card-foreground: var(--boa-text);
+  --popover: var(--boa-surface);
+  --popover-foreground: var(--boa-text);
+  --primary: var(--boa-accent);
+  --primary-foreground: var(--boa-green-900);
+  --secondary: var(--boa-panel);
+  --secondary-foreground: var(--boa-text);
+  --muted: var(--boa-panel);
+  --muted-foreground: var(--boa-muted);
+  --accent: var(--boa-green-700);
+  --accent-foreground: var(--boa-text);
+  --destructive: #ef4444;
+  --border: var(--boa-border);
+  --input: var(--boa-border);
+  --ring: var(--boa-accent-strong);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --boa-bg: var(--boa-green-900);
+    --boa-surface: #0b1712;
+    --boa-panel: var(--boa-green-800);
+    --boa-text: var(--boa-sand-50);
+    --boa-muted: var(--boa-gray-300);
+    --boa-border: var(--boa-gray-800);
+    --boa-accent: var(--boa-green-600);
+    --boa-accent-strong: var(--boa-green-500);
+    --boa-grad-a: rgba(71, 141, 36, 0.38);
+    --boa-grad-b: rgba(22, 53, 37, 0.68);
+    --boa-grad-c: rgba(140, 201, 42, 0.22);
+
+    --background: var(--boa-bg);
+    --foreground: var(--boa-text);
+    --card: var(--boa-surface);
+    --card-foreground: var(--boa-text);
+    --popover: var(--boa-surface);
+    --popover-foreground: var(--boa-text);
+    --primary: var(--boa-accent);
+    --primary-foreground: var(--boa-green-900);
+    --secondary: var(--boa-panel);
+    --secondary-foreground: var(--boa-text);
+    --muted: var(--boa-panel);
+    --muted-foreground: var(--boa-muted);
+    --accent: var(--boa-green-700);
+    --accent-foreground: var(--boa-text);
+    --destructive: #ef4444;
+    --border: var(--boa-border);
+    --input: var(--boa-border);
+    --ring: var(--boa-accent-strong);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  body {
+    background:
+      radial-gradient(70rem 28rem at -12% -16%, var(--boa-grad-a), transparent 62%),
+      radial-gradient(65rem 22rem at 110% -24%, var(--boa-grad-b), transparent 60%),
+      radial-gradient(48rem 20rem at 50% 0%, var(--boa-grad-c), transparent 68%),
+      linear-gradient(180deg, var(--boa-bg) 0%, var(--boa-panel) 100%);
+    color: var(--foreground);
+    font-family: var(--font-body), sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display), sans-serif;
+  }
+
+  .boa-grid {
+    background-image:
+      linear-gradient(rgba(22, 45, 36, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(22, 45, 36, 0.06) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 95%);
+    opacity: 0.5;
+  }
+
+  .boa-glow {
+    background:
+      radial-gradient(circle at 35% 35%, rgba(140, 201, 42, 0.44), rgba(140, 201, 42, 0));
+    animation: boa-drift 18s ease-in-out infinite;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .boa-grid {
+    background-image:
+      linear-gradient(rgba(247, 236, 207, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(247, 236, 207, 0.08) 1px, transparent 1px);
+  }
+
+  .boa-glow {
+    background:
+      radial-gradient(circle at 35% 35%, rgba(103, 165, 37, 0.42), rgba(103, 165, 37, 0));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boa-glow {
+    animation: none;
+  }
+}
+
+@keyframes boa-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, 4%, 0) scale(1.04);
+  }
+}
