@@ -1,0 +1,16 @@
+# OpenBoa
+
+> OpenBoa is an agent-native product organization building products for the Business of Agents.
+
+OpenBoa builds products that let agents remember, evaluate, coordinate, and act.
+
+## Canonical links
+
+- Website: https://openboa.ai/
+- GitHub organization: https://github.com/openboa-ai
+- coffee-chat: https://github.com/openboa-ai/coffee-chat
+- coffee-chat-eval: https://github.com/openboa-ai/coffee-chat-eval
+
+## Brand statement
+
+Business of Agents describes a future in which agents become participants in business. OpenBoa focuses on the product infrastructure required for durable memory, evaluation, coordination, and action.

@@ -1,40 +1,90 @@
 import type { Metadata } from "next"
-import { Manrope, Space_Grotesk } from "next/font/google"
-
+import localFont from "next/font/local"
 import "./globals.css"
 
-const bodyFont = Manrope({
-  variable: "--font-body",
-  subsets: ["latin"],
+const martianGrotesk = localFont({
+  src: "../../public/fonts/MartianGrotesk-wdth-wght.ttf",
+  variable: "--font-martian-grotesk",
+  display: "swap",
+  weight: "100 1000",
 })
 
-const displayFont = Space_Grotesk({
-  variable: "--font-display",
-  subsets: ["latin"],
+const pretendard = localFont({
+  src: "../../public/fonts/PretendardVariable.woff2",
+  variable: "--font-pretendard",
+  display: "swap",
+  weight: "45 920",
 })
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://openboa.ai"),
   title: {
-    default: "openboa - Business as Agent",
-    template: "%s | openboa",
+    default: "OpenBoa — Business of Agents",
+    template: "%s — OpenBoa",
   },
   description:
-    "openboa is an open-source runtime for Business as Agent (boa): durable business identity, evolvable agents, and governance-first autonomy.",
+    "OpenBoa builds products that let agents remember, evaluate, coordinate, and act.",
+  applicationName: "OpenBoa",
+  authors: [{ name: "OpenBoa", url: "https://openboa.ai" }],
+  creator: "OpenBoa",
+  publisher: "OpenBoa",
+  category: "technology",
+  keywords: [
+    "OpenBoa",
+    "Business of Agents",
+    "agent-native products",
+    "AI agents",
+    "agent memory",
+    "agent evaluation",
+    "agent coordination",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48.png", sizes: "48x48", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  manifest: "/manifest.webmanifest",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     type: "website",
-    title: "openboa - Business as Agent",
+    title: "OpenBoa — Business of Agents",
     description:
-      "A deployable business of agents with continuity, governance, and shared memory built in from day one.",
+      "Agents are becoming participants in business. OpenBoa builds the products that let them remember, evaluate, coordinate, and act.",
     url: "https://openboa.ai",
-    siteName: "openboa",
+    siteName: "OpenBoa",
     locale: "en_US",
+    images: [
+      {
+        url: "/openboa-open-graph.png",
+        width: 1200,
+        height: 630,
+        alt: "OpenBoa — Business of Agents",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "openboa - Business as Agent",
+    title: "OpenBoa — Business of Agents",
     description:
-      "A deployable business of agents with governance-first autonomy.",
+      "Agents are becoming participants in business. OpenBoa builds agent-native products.",
+    images: ["/openboa-open-graph.png"],
   },
 }
 
@@ -45,9 +95,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${bodyFont.variable} ${displayFont.variable} antialiased`}
-      >
+      <body className={`${martianGrotesk.variable} ${pretendard.variable}`}>
         {children}
       </body>
     </html>
