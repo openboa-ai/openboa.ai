@@ -1,46 +1,45 @@
 # Design QA
 
-## Source visual
+## Source visual truth
 
-- Reference: `/Users/sangjoon/.codex/generated_images/019ff4fd-04f7-7fc0-a507-3d70327e1775/exec-7e9b2b70-7df2-4b55-998c-c4ce98060c02.png`
-- Original dimensions: 1487 x 1058
-- Target state: desktop landing page, Projects menu closed
+- Selected reference: `/Users/sangjoon/.codex/generated_images/019ff4fd-04f7-7fc0-a507-3d70327e1775/exec-7e9b2b70-7df2-4b55-998c-c4ce98060c02.png`
+- Source pixels and design viewport: 1487 x 1058 at 1x density
+- State: landing page, Projects closed
 
-## Implementation capture
+## Implementation evidence
 
-- Chrome capture: `/Users/sangjoon/Coding/openboa.ai/qa/chrome-current.png`
-- Primary browser viewport: 1280 x 1319
-- Visible landing frame: 1280 x 911, centered without cropping
-- Responsive captures: 390 x 844, 844 x 390, 768 x 1024, and 1440 x 900
+- Primary source-size capture: `qa/responsive-2026-08-12/11-reference-1487x1058.png`
+- Source-size CSS viewport: 1487 x 1058 at 1x density
+- Full-view side-by-side comparison: `qa/responsive-2026-08-12/14-reference-comparison.png`
+- Mobile closed state: `qa/responsive-2026-08-12/12-mobile-final-390x844.png`
+- Mobile Projects-open state: `qa/responsive-2026-08-12/13-mobile-projects-open-390x844.png`
+- Responsive captures: 360 x 800, 390 x 844, 430 x 932, 768 x 1024, 820 x 1180, 844 x 390, 1024 x 768, 1440 x 900, 1728 x 900, 1280 x 1319, and 1487 x 1058.
 
 ## Full-view comparison
 
-- Side-by-side comparison: `/Users/sangjoon/Coding/openboa.ai/qa/comparison-layered.png`
-- Left: reference normalized to 1280 x 911
-- Right: implementation frame at 1280 x 911
+The reference and implementation were normalized to 743 x 529 each and composited into one 1486 x 529 image. At the reference viewport, scale crop, negative space, header hierarchy, hero placement, type hierarchy, color balance, and copy match the selected composition. Differences in letter shapes, supporting-copy color, and exact Terracotta rendering are intentional official brand-system corrections already accepted in the prior implementation.
 
-## Focused regions
+## Focused checks
 
-1. Header and logo: checked official horizontal logo asset, navigation position, spacing, and project disclosure indicator.
-2. Hero copy: checked heading origin, paragraph line breaks, CTA placement, and text hierarchy.
-3. Scale field: checked crop, plate placement, inter-scale negative space, lower-edge lift, and shadow direction.
-4. Brand rendering: checked Carbon canvas/text colors, official Terracotta treatment, Martian Grotesk product typography, and rasterized identity wordmark.
+- Fonts and typography: Martian Grotesk variable font remains active, official weights are unchanged, heading stays on one line at supported widths, and mobile copy wraps in three semantic line groups.
+- Spacing and layout rhythm: the fixed-ratio centered canvas was removed. Landscape anchors the scale field to the right by height; portrait sizes it by width; mobile and short-landscape use compact overrides. Every captured viewport has document dimensions equal to viewport dimensions.
+- Colors and visual tokens: Carbon canvas/text, muted Carbon body copy, and Terracotta CTA/image treatments are unchanged.
+- Image quality and asset fidelity: the existing 1487 x 1058 authored raster field is used unchanged. No CSS, SVG, gradient, or generated substitute was introduced.
+- Copy and content: heading, paragraph, CTA, logo, navigation labels, and project links are unchanged.
+- Interaction: Projects opens at 390 x 844 without covering the hero. `coffee-chat` and `coffee-chat-eval` point to the intended OpenBoa GitHub repositories.
+- Browser health: Chrome reported no warning or error logs during responsive and menu-state checks.
 
-## Findings and iteration history
+## Comparison history
 
-- Replaced the flattened reference screenshot with independently editable HTML for the navigation, heading, paragraph, and CTA.
-- Replaced the flattened wordmark with the official transparent OpenBoa horizontal logo asset.
-- Extracted a transparent, background-only scale field and recolored it with the official Terracotta token while preserving the selected source geometry and shading.
-- Performed a second token audit after image correction: scale surfaces derive only from the official Terracotta 400/500/600/700 ramp and shadows use Blue Carbon 900 with alpha.
-- Preserved the source composition inside a fixed-aspect responsive frame so the scale spacing and crop do not collapse at alternate viewport sizes.
-- Verified portrait mobile, landscape mobile, tablet, and desktop viewports with no document overflow; small viewports use a full-height responsive composition, scale down and anchor the background asset independently, and progressively reduce navigation while keeping Projects available.
-- Switched supporting copy to the official light-theme `text.muted` token, Carbon 500 (`#5D6A6E`), while retaining Carbon 900 for the headline and Terracotta 500 for the CTA.
-- Corrected the implementation typography to the brand-system Martian Grotesk variable font; Pretendard is bundled as the Korean fallback.
-- Verified the Projects disclosure and repository links in Chrome.
-- Added official favicon, PWA icon, and Open Graph assets from the brand-system package and verified their source hashes.
-- Added canonical metadata, crawl directives, sitemap, manifest, Organization/WebSite/WebPage JSON-LD, and `llms.txt` for machine-readable brand context.
-- Matched canonical, sitemap, structured-data, and social-image URLs to the live `https://www.openboa.ai/` destination because the apex domain redirects there.
-- Final visual comparison found no blocking layout, spacing, crop, typography, or asset mismatch. Small text-shape differences are intentional brand-system corrections from the generated reference.
+1. Baseline audit found a P1 responsive composition problem: the fixed 1.405482-ratio frame created side letterboxing on wide screens and reduced the scale field to 720px on tall portrait screens, leaving it isolated from the hero.
+2. The frame was changed to the full viewport, the landscape field was right-anchored by height, and portrait maximum width was increased to 1080px. Post-fix evidence is captured in `08-desktop-1440x900.png`, `09-wide-1728x900.png`, and `10-portrait-1280x1319.png`.
+3. First mobile implementation capture exposed a P2 copy-flow issue: removing `<br>` elements concatenated adjacent text nodes. Each sentence group was wrapped in a block span for mobile. Post-fix evidence is `12-mobile-final-390x844.png`.
+4. Final matrix found no remaining actionable P0, P1, or P2 overflow, collision, hierarchy, asset, interaction, or responsive issues. Some hero and scale bounding boxes overlap geometrically because the transparent raster canvas covers the viewport; visual screenshots confirm the opaque scales do not collide with text.
+
+## Evidence limits
+
+- Screenshot review does not establish full WCAG compliance. Semantic navigation, link destinations, disclosure behavior, focus CSS, responsive reflow, and browser logs were checked; assistive-technology announcements and 200% browser zoom need separate testing if certification is required.
+- Focused crops were not necessary because the source-size full-view comparison keeps the header, hero typography, CTA, and scale edges readable at 1:2 display, while full-resolution captures remain available for inspection.
 
 ## Final result
 

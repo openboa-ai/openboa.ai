@@ -94,11 +94,11 @@ export default function Home() {
         <section className="hero" id="approach">
           <h1>Business of Agents</h1>
           <p>
-            Agents are becoming participants in business.
-            <br />
-            OpenBoa builds the products that let them
-            <br />
-            remember, evaluate, coordinate, and act.
+            <span>Agents are becoming participants in business.</span>
+            <br className="desktop-break" />
+            <span>OpenBoa builds the products that let them</span>
+            <br className="desktop-break" />
+            <span>remember, evaluate, coordinate, and act.</span>
           </p>
           <a className="approach-link" href="#approach-note">
             Read our approach <span aria-hidden="true">→</span>
