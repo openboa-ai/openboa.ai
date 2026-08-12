@@ -6,7 +6,7 @@ OpenBoa builds products that let agents remember, evaluate, coordinate, and act.
 
 ## Canonical links
 
-- Website: https://openboa.ai/
+- Website: https://www.openboa.ai/
 - GitHub organization: https://github.com/openboa-ai
 - coffee-chat: https://github.com/openboa-ai/coffee-chat
 - coffee-chat-eval: https://github.com/openboa-ai/coffee-chat-eval

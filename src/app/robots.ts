@@ -12,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://openboa.ai/sitemap.xml",
-    host: "https://openboa.ai",
+    sitemap: "https://www.openboa.ai/sitemap.xml",
+    host: "https://www.openboa.ai",
   }
 }

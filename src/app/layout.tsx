@@ -17,7 +17,7 @@ const pretendard = localFont({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://openboa.ai"),
+  metadataBase: new URL("https://www.openboa.ai"),
   title: {
     default: "OpenBoa — Business of Agents",
     template: "%s — OpenBoa",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   description:
     "OpenBoa builds products that let agents remember, evaluate, coordinate, and act.",
   applicationName: "OpenBoa",
-  authors: [{ name: "OpenBoa", url: "https://openboa.ai" }],
+  authors: [{ name: "OpenBoa", url: "https://www.openboa.ai" }],
   creator: "OpenBoa",
   publisher: "OpenBoa",
   category: "technology",
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     title: "OpenBoa — Business of Agents",
     description:
       "Agents are becoming participants in business. OpenBoa builds the products that let them remember, evaluate, coordinate, and act.",
-    url: "https://openboa.ai",
+    url: "https://www.openboa.ai",
     siteName: "OpenBoa",
     locale: "en_US",
     images: [

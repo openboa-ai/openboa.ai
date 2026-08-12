@@ -39,6 +39,7 @@
 - Verified the Projects disclosure and repository links in Chrome.
 - Added official favicon, PWA icon, and Open Graph assets from the brand-system package and verified their source hashes.
 - Added canonical metadata, crawl directives, sitemap, manifest, Organization/WebSite/WebPage JSON-LD, and `llms.txt` for machine-readable brand context.
+- Matched canonical, sitemap, structured-data, and social-image URLs to the live `https://www.openboa.ai/` destination because the apex domain redirects there.
 - Final visual comparison found no blocking layout, spacing, crop, typography, or asset mismatch. Small text-shape differences are intentional brand-system corrections from the generated reference.
 
 ## Final result

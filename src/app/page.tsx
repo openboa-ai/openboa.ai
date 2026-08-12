@@ -6,12 +6,12 @@ const structuredData = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://openboa.ai/#organization",
+      "@id": "https://www.openboa.ai/#organization",
       name: "OpenBoa",
-      url: "https://openboa.ai/",
+      url: "https://www.openboa.ai/",
       logo: {
         "@type": "ImageObject",
-        url: "https://openboa.ai/icon-512.png",
+        url: "https://www.openboa.ai/icon-512.png",
         width: 512,
         height: 512,
       },
@@ -21,21 +21,21 @@ const structuredData = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://openboa.ai/#website",
-      url: "https://openboa.ai/",
+      "@id": "https://www.openboa.ai/#website",
+      url: "https://www.openboa.ai/",
       name: "OpenBoa",
       description:
         "OpenBoa builds products that let agents remember, evaluate, coordinate, and act.",
-      publisher: { "@id": "https://openboa.ai/#organization" },
+      publisher: { "@id": "https://www.openboa.ai/#organization" },
       inLanguage: "en",
     },
     {
       "@type": "WebPage",
-      "@id": "https://openboa.ai/#webpage",
-      url: "https://openboa.ai/",
+      "@id": "https://www.openboa.ai/#webpage",
+      url: "https://www.openboa.ai/",
       name: "OpenBoa — Business of Agents",
-      isPartOf: { "@id": "https://openboa.ai/#website" },
-      about: { "@id": "https://openboa.ai/#organization" },
+      isPartOf: { "@id": "https://www.openboa.ai/#website" },
+      about: { "@id": "https://www.openboa.ai/#organization" },
       description:
         "Agents are becoming participants in business. OpenBoa builds the products that let them remember, evaluate, coordinate, and act.",
       inLanguage: "en",
