@@ -105,11 +105,18 @@ function hasReadOnlyPermissions(source) {
   return JSON.stringify(activeLines) === JSON.stringify(["contents: read"])
 }
 
-function hasNoIndentedPermissions(source) {
+// Any active indented plain or quoted `permissions` mapping is an override.
+// Reject it even when flow style places the key later on the line.
+function activeIndentedPermissionLines(source) {
   return source
     .split("\n")
     .filter((line) => line.trim() !== "" && !line.trimStart().startsWith("#"))
-    .every((line) => !/^\s+permissions\s*:/.test(line))
+    .filter((line) => /^\s+/.test(line))
+    .filter((line) => /(?:^|[^A-Za-z0-9_])(?:permissions|["']permissions["'])\s*:/.test(line))
+}
+
+function hasNoIndentedPermissions(source) {
+  return activeIndentedPermissionLines(source).length === 0
 }
 
 function hasYamlKey(block, key) {

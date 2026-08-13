@@ -140,6 +140,38 @@ test("rejects a job-level permission override", async () => {
   )
 })
 
+test("rejects a quoted job-level permission override", async () => {
+  await withFixture(
+    (fixture) =>
+      replace(
+        fixture,
+        ".github/workflows/ci.yml",
+        "  verify:\n    name: verify",
+        "  verify:\n    \"permissions\":\n      contents: write\n    name: verify",
+      ),
+    async (fixture) => {
+      const result = await runContract(fixture)
+      assert.equal(result.status, 1)
+      assert.match(result.output, /FAIL: workflow jobs do not override permissions/)
+    },
+  )
+})
+
+test("rejects permissions embedded in a flow-style job mapping", async () => {
+  await withFixture(
+    (fixture) =>
+      writeFile(
+        join(fixture, ".github/workflows/future.yml"),
+        "name: Future\non:\n  workflow_dispatch:\npermissions:\n  contents: read\njobs:\n  future: { runs-on: ubuntu-latest, permissions: { contents: write }, steps: [{ run: \"true\" }] }\n",
+      ),
+    async (fixture) => {
+      const result = await runContract(fixture)
+      assert.equal(result.status, 1)
+      assert.match(result.output, /FAIL: workflow jobs do not override permissions/)
+    },
+  )
+})
+
 test("rejects an extra pull_request_target trigger", async () => {
   await withFixture(
     (fixture) =>
