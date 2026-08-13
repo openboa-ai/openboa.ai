@@ -40,6 +40,9 @@ jobs:
       - name: Audit dependencies
         run: pnpm audit --audit-level=moderate
 
+      - name: Check repository security contract
+        run: pnpm test:repository-security
+
       - name: Check responsive composition
         run: pnpm test:responsive
 

@@ -12,7 +12,7 @@
     "start": "next start",
     "lint": "eslint",
     "test:responsive": "node scripts/check-responsive-css.mjs",
-    "test:repository-security": "node scripts/check-repository-security.mjs",
+    "test:repository-security": "node --test scripts/check-repository-security.test.mjs && node scripts/check-repository-security.mjs",
     "test:security": "node scripts/check-security-headers.mjs"
   },
   "dependencies": {
