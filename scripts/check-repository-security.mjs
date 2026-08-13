@@ -3,16 +3,15 @@ import { readFile, readdir } from "node:fs/promises"
 import { exit } from "node:process"
 import { resolve } from "node:path"
 import { pathToFileURL } from "node:url"
+import { load as loadYaml } from "js-yaml"
 
 const root = process.env.REPOSITORY_SECURITY_ROOT
   ? pathToFileURL(`${resolve(process.env.REPOSITORY_SECURITY_ROOT)}/`)
   : new URL("../", import.meta.url)
 const read = (path) => readFile(new URL(path, root), "utf8")
 
-const [packageText, ci, dependencyReview, dependabot, workflowFiles] = await Promise.all([
+const [packageText, dependabot, workflowFiles] = await Promise.all([
   read("package.json"),
-  read(".github/workflows/ci.yml"),
-  read(".github/workflows/dependency-review.yml"),
   read(".github/dependabot.yml"),
   readdir(new URL(".github/workflows/", root), { withFileTypes: true }),
 ])
@@ -29,6 +28,92 @@ const packageJson = JSON.parse(packageText)
 const directDependencies = {
   ...packageJson.dependencies,
   ...packageJson.devDependencies,
+}
+
+function isMapping(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+}
+
+function parseWorkflow(workflow) {
+  try {
+    const document = loadYaml(workflow.source)
+
+    return {
+      ...workflow,
+      document: isMapping(document) ? document : null,
+      parsedAsMapping: isMapping(document),
+    }
+  } catch {
+    return { ...workflow, document: null, parsedAsMapping: false }
+  }
+}
+
+function mappingKeysEqual(value, expectedKeys) {
+  if (!isMapping(value)) return false
+
+  return JSON.stringify(Object.keys(value).sort()) === JSON.stringify([...expectedKeys].sort())
+}
+
+function collectMappingValues(node, key, values = [], seen = new WeakSet()) {
+  if (node === null || typeof node !== "object" || seen.has(node)) return values
+
+  seen.add(node)
+
+  if (Array.isArray(node)) {
+    for (const item of node) collectMappingValues(item, key, values, seen)
+    return values
+  }
+
+  for (const [mappingKey, value] of Object.entries(node)) {
+    if (mappingKey === key) values.push(value)
+    collectMappingValues(value, key, values, seen)
+  }
+
+  return values
+}
+
+function isFullShaActionReference(reference) {
+  if (typeof reference !== "string" || reference.length < 41) return false
+
+  return reference.at(-41) === "@" && /^[0-9a-f]{40}$/.test(reference.slice(-40))
+}
+
+function hasReadOnlyPermissions(workflow) {
+  const permissions = workflow?.permissions
+
+  return mappingKeysEqual(permissions, ["contents"]) && permissions.contents === "read"
+}
+
+function hasNoJobPermissions(workflow) {
+  if (!isMapping(workflow?.jobs)) return true
+
+  return Object.values(workflow.jobs).every(
+    (job) => !isMapping(job) || !Object.prototype.hasOwnProperty.call(job, "permissions"),
+  )
+}
+
+function hasTriggerKeys(workflow, keys) {
+  return isMapping(workflow?.on) && keys.every((key) => Object.prototype.hasOwnProperty.call(workflow.on, key))
+}
+
+function hasMainOnlyPushBranches(workflow) {
+  return (
+    isMapping(workflow?.on?.push) &&
+    Array.isArray(workflow.on.push.branches) &&
+    JSON.stringify(workflow.on.push.branches) === JSON.stringify(["main"])
+  )
+}
+
+function workflowJob(workflow, name) {
+  return isMapping(workflow?.jobs?.[name]) ? workflow.jobs[name] : null
+}
+
+function jobSteps(job) {
+  return Array.isArray(job?.steps) ? job.steps.filter(isMapping) : []
+}
+
+function namedStep(job, name) {
+  return jobSteps(job).find((step) => step.name === name)
 }
 
 function indentedBlock(source, key) {
@@ -49,37 +134,6 @@ function indentedBlock(source, key) {
   return lines.slice(start, end).join("\n")
 }
 
-function topLevelBlock(source, key) {
-  const lines = source.split("\n")
-  const start = lines.findIndex((line) => line === key)
-
-  if (start === -1) return ""
-
-  let end = start + 1
-  while (end < lines.length && (lines[end].trim() === "" || /^\s/.test(lines[end]))) end += 1
-
-  return lines.slice(start, end).join("\n")
-}
-
-function actionReferences(source) {
-  return [...source.matchAll(/^\s*(?:-\s*)?uses:\s*([^\s#]+)(?:\s+#.*)?$/gm)].map((match) => match[1])
-}
-
-function activeUsesLines(source) {
-  return source
-    .split("\n")
-    .filter((line) => line.trim() !== "" && !line.trimStart().startsWith("#"))
-    .filter((line) => /(?:^|[^A-Za-z0-9_])(?:uses|["']uses["'])\s*:/.test(line))
-}
-
-// Without a YAML parser, fail closed: active `uses` keys must use the canonical
-// line-style scalar form. Flow mappings, quoted keys, and other forms are rejected.
-function hasOnlyCanonicalPinnedActions(source) {
-  return activeUsesLines(source).every((line) =>
-    /^\s*(?:-\s*)?uses:\s*[^\s#]+@[0-9a-f]{40}\s*(?:#.*)?$/.test(line),
-  )
-}
-
 function hasYamlValue(block, key, value) {
   return new RegExp(`^\\s*${key}:\\s*${value}\\s*(?:#.*)?$`, "m").test(block)
 }
@@ -95,62 +149,6 @@ function listEquals(block, key, values) {
   return JSON.stringify(activeLines) === JSON.stringify(values.map((value) => `- ${value}`))
 }
 
-function hasReadOnlyPermissions(source) {
-  const activeLines = topLevelBlock(source, "permissions:")
-    .split("\n")
-    .slice(1)
-    .map((line) => line.trim())
-    .filter((line) => line !== "" && !line.startsWith("#"))
-
-  return JSON.stringify(activeLines) === JSON.stringify(["contents: read"])
-}
-
-// Any active indented plain or quoted `permissions` mapping is an override.
-// Reject it even when flow style places the key later on the line.
-function activeIndentedPermissionLines(source) {
-  return source
-    .split("\n")
-    .filter((line) => line.trim() !== "" && !line.trimStart().startsWith("#"))
-    .filter((line) => /^\s+/.test(line))
-    .filter((line) => /(?:^|[^A-Za-z0-9_])(?:permissions|["']permissions["'])\s*:/.test(line))
-}
-
-function hasNoIndentedPermissions(source) {
-  return activeIndentedPermissionLines(source).length === 0
-}
-
-function hasYamlKey(block, key) {
-  return new RegExp(`^\\s*${key}:`, "m").test(block)
-}
-
-function hasExactlyTopLevelMappingKeys(block, expectedKeys) {
-  const directLines = block
-    .split("\n")
-    .slice(1)
-    .filter((line) => line.trim() !== "" && !line.trimStart().startsWith("#"))
-    .filter((line) => /^ {2}\S/.test(line))
-  // Trigger keys also use a deliberately narrow block form so unknown valid-YAML
-  // alternatives cannot disappear from the exact-trigger comparison.
-  const matches = directLines.map((line) => line.match(/^ {2}([A-Za-z0-9_-]+):\s*(?:#.*)?$/))
-
-  if (matches.some((match) => match === null)) return false
-
-  const keys = matches.map((match) => match[1])
-
-  return JSON.stringify([...keys].sort()) === JSON.stringify([...expectedKeys].sort())
-}
-
-const ciCheckout = indentedBlock(ci, "- name: Check out repository")
-const ciResponsive = indentedBlock(ci, "- name: Check responsive composition")
-const ciTypeCheck = indentedBlock(ci, "- name: Type check")
-const ciLint = indentedBlock(ci, "- name: Lint")
-const ciVerify = indentedBlock(ci, "verify:")
-const ciRepositorySecurity = indentedBlock(ciVerify, "- name: Check repository security contract")
-const ciTriggers = topLevelBlock(ci, "on:")
-const dependencyCheckout = indentedBlock(dependencyReview, "- name: Check out repository")
-const dependencyAction = indentedBlock(dependencyReview, "- name: Review dependency changes")
-const dependencyJob = indentedBlock(dependencyReview, "dependency-review:")
-const dependencyTriggers = topLevelBlock(dependencyReview, "on:")
 const productionGroup = indentedBlock(dependabot, "production-dependencies:")
 const developmentGroup = indentedBlock(dependabot, "development-dependencies:")
 const npmUpdate = indentedBlock(dependabot, "- package-ecosystem: npm")
@@ -177,31 +175,44 @@ const removedPaths = [
 const repositorySecurityCommand =
   "node --test scripts/check-repository-security.test.mjs && node scripts/check-repository-security.mjs"
 
-const actions = workflows.flatMap(({ source }) => actionReferences(source))
-const allActiveUsesAreCanonicalAndPinned = workflows.every(({ source }) => hasOnlyCanonicalPinnedActions(source))
-const allWorkflowPermissionsAreReadOnly = workflows.every(({ source }) => hasReadOnlyPermissions(source))
-const workflowsHaveNoPermissionOverrides = workflows.every(({ source }) => hasNoIndentedPermissions(source))
+const parsedWorkflows = workflows.map(parseWorkflow)
+const workflowsParseAsMappings = parsedWorkflows.every(({ parsedAsMapping }) => parsedAsMapping)
+const ciWorkflow = parsedWorkflows.find(({ name }) => name === "ci.yml")?.document
+const dependencyReviewWorkflow = parsedWorkflows.find(({ name }) => name === "dependency-review.yml")?.document
+const ciVerify = workflowJob(ciWorkflow, "verify")
+const dependencyJob = workflowJob(dependencyReviewWorkflow, "dependency-review")
+const ciCheckout = namedStep(ciVerify, "Check out repository")
+const ciRepositorySecurity = namedStep(ciVerify, "Check repository security contract")
+const dependencyCheckout = namedStep(dependencyJob, "Check out repository")
+const dependencyAction = namedStep(dependencyJob, "Review dependency changes")
+const actions = parsedWorkflows.flatMap(({ document }) => collectMappingValues(document, "uses"))
+const allWorkflowPermissionsAreReadOnly = parsedWorkflows.every(({ document }) => hasReadOnlyPermissions(document))
+const workflowsHaveNoPermissionOverrides = parsedWorkflows.every(({ document }) => hasNoJobPermissions(document))
+const ciSteps = jobSteps(ciVerify)
+const ciResponsiveIndex = ciSteps.findIndex(({ name }) => name === "Check responsive composition")
+const ciTypeCheckIndex = ciSteps.findIndex(({ name }) => name === "Type check")
+const ciLintIndex = ciSteps.findIndex(({ name }) => name === "Lint")
 const ciTypeCheckIsOrdered =
-  hasYamlValue(ciResponsive, "run", "pnpm test:responsive") &&
-  hasYamlValue(ciTypeCheck, "run", "pnpm exec tsc --noEmit") &&
-  hasYamlValue(ciLint, "run", "pnpm lint") &&
-  ci.indexOf("- name: Check responsive composition") < ci.indexOf("- name: Type check") &&
-  ci.indexOf("- name: Type check") < ci.indexOf("- name: Lint")
+  ciResponsiveIndex !== -1 &&
+  ciSteps[ciResponsiveIndex].run === "pnpm test:responsive" &&
+  ciTypeCheckIndex !== -1 &&
+  ciSteps[ciTypeCheckIndex].run === "pnpm exec tsc --noEmit" &&
+  ciLintIndex !== -1 &&
+  ciSteps[ciLintIndex].run === "pnpm lint" &&
+  ciResponsiveIndex < ciTypeCheckIndex &&
+  ciTypeCheckIndex < ciLintIndex
 const ciContractIsPreserved =
-  hasYamlKey(ciTriggers, "pull_request") &&
-  hasYamlKey(ciTriggers, "push") &&
-  hasYamlKey(ciTriggers, "merge_group") &&
-  listEquals(indentedBlock(ciTriggers, "push:"), "branches", ["main"]) &&
-  hasYamlValue(ciVerify, "name", "verify") &&
-  hasYamlValue(ciVerify, "timeout-minutes", "15")
+  hasTriggerKeys(ciWorkflow, ["pull_request", "push", "merge_group"]) &&
+  hasMainOnlyPushBranches(ciWorkflow) &&
+  ciVerify?.name === "verify" &&
+  ciVerify?.["timeout-minutes"] === 15
 const dependencyReviewContractIsPreserved =
-  hasYamlKey(dependencyTriggers, "pull_request") &&
-  hasYamlValue(dependencyJob, "name", "dependency-review") &&
-  hasYamlValue(dependencyJob, "timeout-minutes", "10")
+  hasTriggerKeys(dependencyReviewWorkflow, ["pull_request"]) &&
+  dependencyJob?.name === "dependency-review" &&
+  dependencyJob?.["timeout-minutes"] === 10
 const ciHasExactlyApprovedTriggers =
-  hasExactlyTopLevelMappingKeys(ciTriggers, ["pull_request", "push", "merge_group"]) &&
-  listEquals(indentedBlock(ciTriggers, "push:"), "branches", ["main"])
-const dependencyReviewHasExactlyApprovedTriggers = hasExactlyTopLevelMappingKeys(dependencyTriggers, ["pull_request"])
+  mappingKeysEqual(ciWorkflow?.on, ["pull_request", "push", "merge_group"]) && hasMainOnlyPushBranches(ciWorkflow)
+const dependencyReviewHasExactlyApprovedTriggers = mappingKeysEqual(dependencyReviewWorkflow?.on, ["pull_request"])
 const groupedUpdateTypes = (block) => listEquals(block, "update-types", ["minor", "patch"])
 const hasGroupSemantics = (block, dependencyType) =>
   hasYamlValue(block, "dependency-type", dependencyType) && listEquals(block, "patterns", ['"*"'])
@@ -213,26 +224,26 @@ const checks = [
     "package repository-security command runs fixtures and production checker",
     packageJson.scripts?.["test:repository-security"] === repositorySecurityCommand,
   ],
-  ["all workflow actions use full commit SHAs", actions.length > 0 && actions.every((reference) => /@[0-9a-f]{40}$/.test(reference))],
-  ["every active uses mapping is canonical and pinned to a full commit SHA", allActiveUsesAreCanonicalAndPinned],
-  ["CI workflow permissions are read-only", hasReadOnlyPermissions(ci)],
-  ["Dependency Review workflow permissions are read-only", hasReadOnlyPermissions(dependencyReview)],
+  ["workflow files parse as object mappings", workflowsParseAsMappings],
+  ["all workflow actions use full commit SHAs", actions.length > 0 && actions.every(isFullShaActionReference)],
+  ["CI workflow permissions are read-only", hasReadOnlyPermissions(ciWorkflow)],
+  ["Dependency Review workflow permissions are read-only", hasReadOnlyPermissions(dependencyReviewWorkflow)],
   ["every workflow has explicit read-only permissions", allWorkflowPermissionsAreReadOnly],
   ["workflow jobs do not override permissions", workflowsHaveNoPermissionOverrides],
   ["CI retains its trigger, job, and timeout contract", ciContractIsPreserved],
   ["Dependency Review retains its trigger, job, and timeout contract", dependencyReviewContractIsPreserved],
   ["CI has exactly the approved triggers", ciHasExactlyApprovedTriggers],
   ["Dependency Review has exactly the approved triggers", dependencyReviewHasExactlyApprovedTriggers],
-  ["CI checkout does not persist credentials", hasYamlValue(ciCheckout, "persist-credentials", "false")],
+  ["CI checkout does not persist credentials", ciCheckout?.with?.["persist-credentials"] === false],
   [
     "CI runs the repository-security command in the verify job",
-    hasYamlValue(ciRepositorySecurity, "run", "pnpm test:repository-security"),
+    ciRepositorySecurity?.run === "pnpm test:repository-security",
   ],
   ["CI runs the TypeScript no-emit check after responsive composition and before lint", ciTypeCheckIsOrdered],
-  ["Dependency Review checkout does not persist credentials", hasYamlValue(dependencyCheckout, "persist-credentials", "false")],
-  ["Dependency Review blocks moderate and higher severity changes", hasYamlValue(dependencyAction, "fail-on-severity", "moderate")],
-  ["Dependency Review blocks runtime and development scopes", hasYamlValue(dependencyAction, "fail-on-scopes", "runtime,development")],
-  ["Dependency Review reports patched versions", hasYamlValue(dependencyAction, "show-patched-versions", "true")],
+  ["Dependency Review checkout does not persist credentials", dependencyCheckout?.with?.["persist-credentials"] === false],
+  ["Dependency Review blocks moderate and higher severity changes", dependencyAction?.with?.["fail-on-severity"] === "moderate"],
+  ["Dependency Review blocks runtime and development scopes", dependencyAction?.with?.["fail-on-scopes"] === "runtime,development"],
+  ["Dependency Review reports patched versions", dependencyAction?.with?.["show-patched-versions"] === true],
   ["Dependabot limits npm pull requests to five", hasYamlValue(npmUpdate, "open-pull-requests-limit", "5")],
   ["Dependabot production group keeps production wildcard semantics", hasGroupSemantics(productionGroup, "production")],
   ["Dependabot development group keeps development wildcard semantics", hasGroupSemantics(developmentGroup, "development")],

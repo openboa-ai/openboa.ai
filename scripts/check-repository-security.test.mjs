@@ -86,7 +86,7 @@ test("rejects a flow-style unpinned action", async () => {
     async (fixture) => {
       const result = await runContract(fixture)
       assert.equal(result.status, 1)
-      assert.match(result.output, /FAIL: every active uses mapping is canonical and pinned to a full commit SHA/)
+      assert.match(result.output, /FAIL: all workflow actions use full commit SHAs/)
     },
   )
 })
@@ -103,7 +103,7 @@ test("rejects a quoted flow-style uses key", async () => {
     async (fixture) => {
       const result = await runContract(fixture)
       assert.equal(result.status, 1)
-      assert.match(result.output, /FAIL: every active uses mapping is canonical and pinned to a full commit SHA/)
+      assert.match(result.output, /FAIL: all workflow actions use full commit SHAs/)
     },
   )
 })
@@ -168,6 +168,66 @@ test("rejects permissions embedded in a flow-style job mapping", async () => {
       const result = await runContract(fixture)
       assert.equal(result.status, 1)
       assert.match(result.output, /FAIL: workflow jobs do not override permissions/)
+    },
+  )
+})
+
+test("rejects an escaped job-level permissions key", async () => {
+  await withFixture(
+    (fixture) =>
+      replace(
+        fixture,
+        ".github/workflows/ci.yml",
+        "  verify:\n    name: verify",
+        "  verify:\n    \"permiss\\u0069ons\":\n      contents: write\n    name: verify",
+      ),
+    async (fixture) => {
+      const result = await runContract(fixture)
+      assert.equal(result.status, 1)
+      assert.match(result.output, /FAIL: workflow jobs do not override permissions/)
+    },
+  )
+})
+
+test("rejects an escaped flow-style uses key with an unpinned action", async () => {
+  await withFixture(
+    (fixture) =>
+      replace(
+        fixture,
+        ".github/workflows/ci.yml",
+        "    steps:\n",
+        "    steps:\n      - { \"u\\u0073es\": actions/checkout@v7 }\n",
+      ),
+    async (fixture) => {
+      const result = await runContract(fixture)
+      assert.equal(result.status, 1)
+      assert.match(result.output, /FAIL: all workflow actions use full commit SHAs/)
+    },
+  )
+})
+
+test("rejects an unpinned action reached through an escaped key and alias", async () => {
+  await withFixture(
+    (fixture) =>
+      writeFile(
+        join(fixture, ".github/workflows/future.yml"),
+        "name: Future\non:\n  workflow_dispatch:\npermissions:\n  contents: read\njobs:\n  future:\n    runs-on: ubuntu-latest\n    steps:\n      - &checkout\n        \"u\\u0073es\": actions/checkout@v7\n      - *checkout\n",
+      ),
+    async (fixture) => {
+      const result = await runContract(fixture)
+      assert.equal(result.status, 1)
+      assert.match(result.output, /FAIL: all workflow actions use full commit SHAs/)
+    },
+  )
+})
+
+test("rejects a workflow with duplicate mapping keys", async () => {
+  await withFixture(
+    (fixture) => replace(fixture, ".github/workflows/ci.yml", "name: CI\n", "name: CI\nname: Duplicate CI\n"),
+    async (fixture) => {
+      const result = await runContract(fixture)
+      assert.equal(result.status, 1)
+      assert.match(result.output, /FAIL: workflow files parse as object mappings/)
     },
   )
 })
