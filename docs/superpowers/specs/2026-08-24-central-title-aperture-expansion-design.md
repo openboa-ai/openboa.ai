@@ -1,17 +1,18 @@
-# Central Title Aperture 20% Expansion Design
+# Central Title Aperture Balance Design
 
 ## Context
 
-The centered philosophy title already uses a text-bounded quiet aperture. Its
-fully off-white core is correct, but the surrounding feather should reach
-slightly farther into the living-scale field. The user approved a 20% increase.
+The centered philosophy title uses a text-bounded quiet aperture. The final
+approved balance keeps the surrounding feather 20% wider than the original
+baseline while expanding the fully off-white center inside the measured title
+bounds.
 
 ## Decision
 
-Expand only the central title aperture's horizontal and vertical feather by an
-exact factor of `1.2`. Keep the measured text bounds and fully off-white core
-unchanged. This preserves the current hierarchy while making the transition
-into the scale field feel less tight.
+Expand the central title aperture's horizontal and vertical feather by an exact
+factor of `1.2`. Keep the measured text bounds unchanged and increase
+`innerEdge` from `0.45` to `0.55`. This creates a larger fully off-white center
+without turning the surrounding transition into a broad flat field.
 
 ## Parameter changes
 
@@ -20,6 +21,7 @@ The following `QUIET_APERTURE` values change in
 
 | Parameter | Current | Approved |
 | --- | ---: | ---: |
+| `innerEdge` | `0.45` | `0.55` |
 | `featherXMin` | `44` | `52.8` |
 | `featherXMax` | `136` | `163.2` |
 | `featherXViewportRatio` | `0.10625` | `0.1275` |
@@ -32,8 +34,6 @@ Scaling the minimum, maximum, and viewport ratio together keeps the increase at
 
 ## Preserved behavior
 
-- `innerEdge: 0.45` remains unchanged, so the completely off-white core does
-  not grow.
 - `shapePower`, `motionFloor`, `colorMix`, scale colors, scale movement, and
   cursor interaction remain unchanged.
 - Header, Products dropdown, footer, and social apertures remain unchanged.
@@ -42,7 +42,7 @@ Scaling the minimum, maximum, and viewport ratio together keeps the increase at
 ## Verification
 
 - Add a contract check that locks all six approved feather values and confirms
-  `innerEdge` remains `0.45`.
+  the expanded `innerEdge` value of `0.55`.
 - Run token, responsive, lint, type, and production-build checks.
 - Inspect the centered title at the same browser viewport before and after the
   change, including the Products-open state.

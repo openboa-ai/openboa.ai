@@ -41,7 +41,7 @@ The combined comparison documents why the tokenized scale palette was rejected: 
 ## Central title aperture follow-up
 
 - The central title feather is expanded by exactly 20% at every responsive clamp state.
-- The off-white core, contour shape, motion attenuation, colors, and all non-central apertures are unchanged.
+- The off-white core is expanded from `innerEdge: 0.45` to `0.55`; contour shape, motion attenuation, colors, and all non-central apertures are unchanged.
 - Closed and Products-open production captures are recorded at `qa/token-integration/central-aperture-20-percent.jpg` and `qa/token-integration/central-aperture-20-percent-dropdown.jpg`.
 - The same-viewport before/after comparison is recorded at `qa/token-integration/central-aperture-comparison-947x1114.jpg`.
 - Browser warning and error logs were empty.
