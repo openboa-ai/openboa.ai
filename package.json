@@ -11,7 +11,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:responsive": "node scripts/check-responsive-css.mjs",
+    "tokens:generate": "node scripts/generate-openboa-tokens.mjs",
+    "tokens:check": "node scripts/generate-openboa-tokens.mjs --check",
+    "test:design": "pnpm tokens:check && node scripts/check-design-token-contract.mjs",
+    "test:responsive": "pnpm test:design && node scripts/check-responsive-css.mjs",
     "test:repository-security": "node --test scripts/check-repository-security.test.mjs && node scripts/check-repository-security.mjs",
     "test:security": "node scripts/check-security-headers.mjs"
   },

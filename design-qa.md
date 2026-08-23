@@ -1,46 +1,66 @@
-# Design QA
+# Design QA — brand token integration
 
-## Source visual truth
+## Visual truth and rollback baseline
 
-- Selected reference: `/Users/sangjoon/.codex/generated_images/019ff4fd-04f7-7fc0-a507-3d70327e1775/exec-7e9b2b70-7df2-4b55-998c-c4ce98060c02.png`
-- Source pixels and design viewport: 1487 x 1058 at 1x density
-- State: landing page, Projects closed
+- Approved source: the last landing prototype served at `http://localhost:50833/`.
+- Preserved rollback branch: `backup/landing-v33-20260823`.
+- Preserved rollback commit: `8bfc4d2`.
+- The archived source and assets are checksum-verified in `rollback/landing-v33/SHA256SUMS.txt` on that branch.
+- Implementation under review: `codex/central-aperture-20`, served from the production build at `http://127.0.0.1:50834/`.
 
-## Implementation evidence
+## Comparison evidence
 
-- Primary source-size capture: `qa/responsive-2026-08-12/11-reference-1487x1058.png`
-- Source-size CSS viewport: 1487 x 1058 at 1x density
-- Full-view side-by-side comparison: `qa/responsive-2026-08-12/14-reference-comparison.png`
-- Mobile closed state: `qa/responsive-2026-08-12/12-mobile-final-390x844.png`
-- Mobile Projects-open state: `qa/responsive-2026-08-12/13-mobile-projects-open-390x844.png`
-- Responsive captures: 360 x 800, 390 x 844, 430 x 932, 768 x 1024, 820 x 1180, 844 x 390, 1024 x 768, 1440 x 900, 1728 x 900, 1280 x 1319, and 1487 x 1058.
+- Same-viewport desktop reference: `qa/token-integration/reference-1280x720.png`.
+- Same-viewport desktop implementation: `qa/token-integration/implementation-1280x720.png`.
+- Same-viewport dropdown reference: `qa/token-integration/reference-dropdown-1280x720.png`.
+- Same-viewport dropdown implementation: `qa/token-integration/implementation-dropdown-1280x720.png`.
+- Combined 2 x 2 comparison: `qa/token-integration/comparison-2x2.png`.
+- Mobile composition harness at 390 x 844: `qa/token-integration/reference-mobile-390x844.png` and `qa/token-integration/implementation-mobile-390x844.png`.
+- Final background opt-out: `qa/token-integration/restored-background-947x1146.jpg`.
+- Final background opt-out with Products open: `qa/token-integration/restored-background-dropdown-947x1146.jpg`.
 
-## Full-view comparison
+The combined comparison documents why the tokenized scale palette was rejected: the approved reference is on the left and the quantized token experiment is on the right. The two final background-opt-out captures supersede the right-hand color treatment while retaining its UI token calibration and layout.
 
-The reference and implementation were normalized to 743 x 529 each and composited into one 1486 x 529 image. At the reference viewport, scale crop, negative space, header hierarchy, hero placement, type hierarchy, color balance, and copy match the selected composition. Differences in letter shapes, supporting-copy color, and exact Terracotta rendering are intentional official brand-system corrections already accepted in the prior implementation.
+## Intentional calibration changes
+
+- Expression text, body text, accent, type scale, spacing, icon size, motion timing, and breakpoint values resolve from the canonical OpenBoa token snapshot.
+- The hero uses the canonical desktop `display-03` role and mobile `title-02` role. Its darker expression color and more decisive weight are therefore intentional.
+- The living-scale background deliberately opts out of UI color tokens and restores the approved v33 continuous light-to-Terracotta field. This preserves its softer depth and natural macro flow.
+- The approved composition, copy, logo placement, local apertures, scale overlap, ambient movement, cursor response, dropdown growth, and footer/social structure are preserved.
 
 ## Focused checks
 
-- Fonts and typography: Martian Grotesk variable font remains active, official weights are unchanged, heading stays on one line at supported widths, and mobile copy wraps in three semantic line groups.
-- Spacing and layout rhythm: the fixed-ratio centered canvas was removed. Landscape anchors the scale field to the right by height; portrait sizes it by width; mobile and short-landscape use compact overrides. Every captured viewport has document dimensions equal to viewport dimensions.
-- Colors and visual tokens: Carbon canvas/text, muted Carbon body copy, and Terracotta CTA/image treatments are unchanged.
-- Image quality and asset fidelity: the existing 1487 x 1058 authored raster field is used unchanged. No CSS, SVG, gradient, or generated substitute was introduced.
-- Copy and content: heading, paragraph, CTA, logo, navigation labels, and project links are unchanged.
-- Interaction: Projects opens at 390 x 844 without covering the hero. `coffee-chat` and `coffee-chat-eval` point to the intended OpenBoa GitHub repositories.
-- Browser health: Chrome reported no warning or error logs during responsive and menu-state checks.
+- Typography: Martian Grotesk is the sole UI typeface. Korean-specific font assets were removed as requested. Hero, navigation, product metadata, and footer roles map to generated semantic aliases.
+- Color: authored CSS contains no landing-specific hex values; generated token aliases provide semantic UI colors. The WebGL scale field carries its documented v33 art calibration separately.
+- Assets: the canonical horizontal logo is reused at full opacity. Chevron, GitHub, X, and antialiased scale-cutout assets are local and resolve without browser errors.
+- Interaction: Products opens on hover and click, remains open while the pointer moves into its links, closes with the intended dimming sequence, and closes on Escape. Cursor interaction and ambient scale movement remain active.
+- Responsive behavior: desktop navigation separates left and right apertures; the mobile header composes into two rows. Hero type, local footer/social apertures, and dropdown sizing remain within the 390 x 844 mobile composition.
+- Accessibility: semantic navigation and links remain keyboard-operable, visible focus treatment is present, reduced-motion handling is retained, and decorative canvases are excluded from pointer and accessibility semantics.
+- Browser health: the production build reported no browser warning or error logs after load and dropdown interaction.
 
-## Comparison history
+## Central title aperture follow-up
 
-1. Baseline audit found a P1 responsive composition problem: the fixed 1.405482-ratio frame created side letterboxing on wide screens and reduced the scale field to 720px on tall portrait screens, leaving it isolated from the hero.
-2. The frame was changed to the full viewport, the landscape field was right-anchored by height, and portrait maximum width was increased to 1080px. Post-fix evidence is captured in `08-desktop-1440x900.png`, `09-wide-1728x900.png`, and `10-portrait-1280x1319.png`.
-3. First mobile implementation capture exposed a P2 copy-flow issue: removing `<br>` elements concatenated adjacent text nodes. Each sentence group was wrapped in a block span for mobile. Post-fix evidence is `12-mobile-final-390x844.png`.
-4. Final matrix found no remaining actionable P0, P1, or P2 overflow, collision, hierarchy, asset, interaction, or responsive issues. Some hero and scale bounding boxes overlap geometrically because the transparent raster canvas covers the viewport; visual screenshots confirm the opaque scales do not collide with text.
+- The central title feather is expanded by exactly 20% at every responsive clamp state.
+- The off-white core is expanded from `innerEdge: 0.45` to `0.55`; contour shape, motion attenuation, colors, and all non-central apertures are unchanged.
+- Closed and Products-open production captures are recorded at `qa/token-integration/central-aperture-20-percent.jpg` and `qa/token-integration/central-aperture-20-percent-dropdown.jpg`.
+- The same-viewport before/after comparison is recorded at `qa/token-integration/central-aperture-comparison-947x1114.jpg`.
+- Browser warning and error logs were empty.
+
+## Verification
+
+- `pnpm tokens:check` — passed.
+- `pnpm test:responsive` — passed.
+- `pnpm lint` — passed.
+- `pnpm exec tsc --noEmit` — passed.
+- `pnpm build` — passed.
+- `pnpm audit --audit-level=moderate` — no known vulnerabilities.
+- `pnpm test:repository-security` — 18/18 fixture tests and all production contract checks passed.
+- `BASE_URL=http://127.0.0.1:50834 pnpm test:security` — passed.
+- `git diff --check` — passed.
 
 ## Evidence limits
 
-- Screenshot review does not establish full WCAG compliance. Semantic navigation, link destinations, disclosure behavior, focus CSS, responsive reflow, and browser logs were checked; assistive-technology announcements and 200% browser zoom need separate testing if certification is required.
-- Focused crops were not necessary because the source-size full-view comparison keeps the header, hero typography, CTA, and scale edges readable at 1:2 display, while full-resolution captures remain available for inspection.
+- Screenshot review and semantic checks do not constitute full WCAG certification. Assistive-technology announcement behavior and a complete 200% zoom audit would require a separate accessibility pass.
+- The mobile evidence is captured through an isolated 390 x 844 composition harness inside the fixed in-app Browser viewport; it validates layout and reflow, not mobile browser chrome.
 
-## Final result
-
-passed
+final result: passed
