@@ -9,13 +9,14 @@ const digest = async (path) => createHash("sha256")
   .update(await readFile(new URL(path, root)))
   .digest("hex")
 
-const [snapshot, generatedCss, generatedValues, globals, field, layout] = await Promise.all([
+const [snapshot, generatedCss, generatedValues, globals, field, layout, quietAperture] = await Promise.all([
   read("src/design-system/openboa.tokens.json"),
   read("src/design-system/generated/openboa-tokens.css"),
   read("src/design-system/generated/openboa-token-values.ts"),
   read("src/app/globals.css"),
   read("src/lib/openboa/scale-field.ts"),
   read("src/app/layout.tsx"),
+  read("src/lib/openboa/quiet-aperture.ts"),
 ])
 
 const [snapshotHash, logoHash, fontHash, textureHash] = await Promise.all([
@@ -35,6 +36,18 @@ const checks = [
   ["authored landing CSS consumes aliases without raw hex colors", !/#[0-9a-f]{3,8}\b/i.test(globals) && globals.includes("var(--ob-color-text-expression)")],
   ["living-scale background is intentionally independent from UI color tokens", !field.includes("OPENBOA_COLORS") && field.includes("APPROVED_BACKGROUND_PAPER")],
   ["approved v33 background restores continuous tonal flow", field.includes("a_weight * 0.04") && field.includes("mix(terracotta100, terracotta500, tone)")],
+  [
+    "central title aperture uses the approved 20 percent feather expansion",
+    [
+      "innerEdge: 0.45",
+      "featherXMin: 52.8",
+      "featherXMax: 163.2",
+      "featherXViewportRatio: 0.1275",
+      "featherYMin: 69.6",
+      "featherYMax: 110.4",
+      "featherYViewportRatio: 0.08625",
+    ].every((value) => quietAperture.includes(value)),
+  ],
   ["official 320px identity lockup is exact", logoHash === "4a012c596390ec582244b371d3dacc2019b56334e4e33cd5250101b951dbad59"],
   ["canonical Martian Grotesk font is exact", fontHash === "f81807163c34ff754e6d915b0b59f76cca88332b67c45cfc7453ace5751ae912"],
   ["approved antialiased scale cutout is exact", textureHash === "c48e949094ef64a11a376b4e19369380f52b5ba8f6102513f62ccb025fea4616"],
