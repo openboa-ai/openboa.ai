@@ -122,20 +122,11 @@ export function OpenBoaLanding() {
 
       <section id="vision" className="philosophy" ref={philosophyRef}>
         <h1>
-          Expanding the horizon of
-          <br />
-          human possibility
+          <span className="hero-line">Expanding the horizon of</span>{" "}
+          <span className="hero-line">human possibility</span>
         </h1>
-        <p className="context">
-          OpenBoa explores this horizon through the Business of Agents
-        </p>
-      </section>
-
-      <section id="about" className="sr-only" aria-labelledby="about-title">
-        <h2 id="about-title">About OpenBoa</h2>
-        <p>
-          Agents are expanding the scope of human creation. OpenBoa explores
-          this new horizon through the Business of Agents.
+        <p id="about" className="context" tabIndex={-1}>
+          OpenBoa explores this horizon through the Business of Agents.
         </p>
       </section>
 

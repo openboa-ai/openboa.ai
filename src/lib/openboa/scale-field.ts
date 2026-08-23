@@ -88,6 +88,7 @@ export function mountScaleField(elements: ScaleFieldElements) {
   let disposed = false
   let projectsMenuPinned = false
   let dropdownTargetOpen = false
+  let suppressNextMenuFocusOpen = false
   let dropdownApertureProgress = 0
   let dropdownColorProgress = 0
   let previousRenderTime: number | null = null
@@ -147,7 +148,13 @@ export function mountScaleField(elements: ScaleFieldElements) {
     ) return
     if (!projectsMenuPinned) setDropdownTarget(false)
   }
-  const onMenuFocusIn = () => setDropdownTarget(true)
+  const onMenuFocusIn = () => {
+    if (suppressNextMenuFocusOpen) {
+      suppressNextMenuFocusOpen = false
+      return
+    }
+    setDropdownTarget(true)
+  }
   const onMenuFocusOut = (event: FocusEvent) => {
     if (
       !projectsMenuPinned
@@ -171,9 +178,14 @@ export function mountScaleField(elements: ScaleFieldElements) {
   }
   const onMenuKeyDown = (event: KeyboardEvent) => {
     if (event.key !== "Escape") return
+    event.preventDefault()
     projectsMenuPinned = false
     setDropdownTarget(false)
-    projectsSummary.focus()
+    if (document.activeElement !== projectsSummary) {
+      suppressNextMenuFocusOpen = true
+      projectsSummary.focus({ preventScroll: true })
+      suppressNextMenuFocusOpen = false
+    }
   }
 
   projectsMenu.addEventListener("pointerenter", onMenuPointerEnter)

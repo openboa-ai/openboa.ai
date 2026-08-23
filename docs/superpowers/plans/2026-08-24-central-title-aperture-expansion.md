@@ -4,7 +4,7 @@
 
 **Goal:** Set the centered title aperture feather to exactly 20% above its original baseline and expand its off-white core from `innerEdge: 0.45` to `0.55`, while preserving every other aperture.
 
-**Architecture:** Keep the change inside the existing `QUIET_APERTURE` configuration so `sampleQuietAperture()` remains the single source of central-title geometry. Lock the six approved feather values and the unchanged core value in the design contract, then validate the production rendering separately.
+**Architecture:** Keep the change inside the existing `QUIET_APERTURE` configuration so `sampleQuietAperture()` remains the single source of central-title geometry. Lock the six approved feather values and the expanded core value in the design contract, then validate the production rendering separately.
 
 **Tech Stack:** TypeScript, WebGL-backed Next.js 16 landing page, Node.js contract scripts, pnpm, in-app Browser visual QA
 

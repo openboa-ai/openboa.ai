@@ -45,8 +45,4 @@ Report suspected vulnerabilities privately through the repository's **Security**
 
 ## Deployment
 
-Production deploys from protected `main`. Changes should enter through a pull request after required checks pass.
-
-The pre-token landing prototype is preserved on the local
-`backup/landing-v33-20260823` branch. The active implementation branch is
-`codex/landing-brand-token-pass`.
+Production deploys from protected `main`. Changes should enter through a pull request after required checks pass. Visual calibration and rollback notes are recorded in [`design-qa.md`](design-qa.md).

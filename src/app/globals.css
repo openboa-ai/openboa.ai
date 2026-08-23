@@ -297,6 +297,10 @@ a {
   text-wrap: balance;
 }
 
+.philosophy h1 .hero-line {
+  display: block;
+}
+
 .philosophy .context {
   width: min(580px, 92%);
   margin: var(--ob-space-24) auto 0;
@@ -309,6 +313,11 @@ a {
   letter-spacing: var(--ob-type-body-tracking);
   line-height: var(--ob-type-body-line-height);
   text-wrap: balance;
+}
+
+.philosophy .context:focus-visible {
+  outline: 2px solid var(--ob-color-focus-ring);
+  outline-offset: 5px;
 }
 
 .site-footnote {
@@ -441,13 +450,17 @@ a {
   }
 
   .philosophy h1 {
-    font-size: var(--ob-type-hero-mobile-size);
+    font-size: min(var(--ob-type-hero-mobile-size), 7vw);
     font-weight: var(--ob-type-hero-mobile-weight);
     font-variation-settings:
       "wght" var(--ob-type-hero-mobile-weight),
       "wdth" var(--ob-type-hero-mobile-width);
     letter-spacing: var(--ob-type-hero-mobile-tracking);
     line-height: var(--ob-type-hero-mobile-line-height);
+  }
+
+  .philosophy h1 .hero-line {
+    white-space: nowrap;
   }
 
   .philosophy .context {
