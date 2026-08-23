@@ -1,15 +1,16 @@
 import type { MetadataRoute } from "next"
+import { OPENBOA_COLORS } from "@/design-system/generated/openboa-token-values"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "OpenBoa — Business of Agents",
+    name: "OpenBoa — Expanding the horizon of human possibility",
     short_name: "OpenBoa",
     description:
-      "OpenBoa builds products that let agents remember, evaluate, coordinate, and act.",
+      "OpenBoa explores the horizon of human possibility through the Business of Agents.",
     start_url: "/",
     display: "standalone",
-    background_color: "#F8F8F5",
-    theme_color: "#F8F8F5",
+    background_color: OPENBOA_COLORS.canvas.hex,
+    theme_color: OPENBOA_COLORS.canvas.hex,
     icons: [
       {
         src: "/icon-192.png",

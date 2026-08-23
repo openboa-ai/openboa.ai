@@ -1,6 +1,11 @@
 # OpenBoa.ai
 
-The official OpenBoa landing page for **Business of Agents**.
+The official OpenBoa landing page: **Expanding the horizon of human possibility**.
+
+The site consumes a pinned snapshot of the canonical
+[`openboa-brand-system`](https://github.com/openboa-ai/openboa-brand-system)
+tokens. Update the snapshot deliberately, then regenerate the site aliases with
+`pnpm tokens:generate`.
 
 ## Local development
 
@@ -18,6 +23,7 @@ pnpm dev
 
 ```bash
 pnpm audit --audit-level=moderate
+pnpm tokens:check
 pnpm test:responsive
 pnpm lint
 pnpm build
@@ -39,3 +45,7 @@ Report suspected vulnerabilities privately through the repository's **Security**
 ## Deployment
 
 Production deploys from protected `main`. Changes should enter through a pull request after required checks pass.
+
+The pre-token landing prototype is preserved on the local
+`backup/landing-v33-20260823` branch. The active implementation branch is
+`codex/landing-brand-token-pass`.

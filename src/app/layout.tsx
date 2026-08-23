@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import localFont from "next/font/local"
+import "@/design-system/generated/openboa-tokens.css"
 import "./globals.css"
 
 const martianGrotesk = localFont({
@@ -9,21 +10,14 @@ const martianGrotesk = localFont({
   weight: "100 1000",
 })
 
-const pretendard = localFont({
-  src: "../../public/fonts/PretendardVariable.woff2",
-  variable: "--font-pretendard",
-  display: "swap",
-  weight: "45 920",
-})
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.openboa.ai"),
   title: {
-    default: "OpenBoa — Business of Agents",
+    default: "OpenBoa — Expanding the horizon of human possibility",
     template: "%s — OpenBoa",
   },
   description:
-    "OpenBoa builds products that let agents remember, evaluate, coordinate, and act.",
+    "OpenBoa explores the horizon of human possibility through the Business of Agents.",
   applicationName: "OpenBoa",
   authors: [{ name: "OpenBoa", url: "https://www.openboa.ai" }],
   creator: "OpenBoa",
@@ -32,11 +26,10 @@ export const metadata: Metadata = {
   keywords: [
     "OpenBoa",
     "Business of Agents",
-    "agent-native products",
+    "agent-native business",
     "AI agents",
-    "agent memory",
-    "agent evaluation",
-    "agent coordination",
+    "human possibility",
+    "human creation",
   ],
   alternates: {
     canonical: "/",
@@ -64,9 +57,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "OpenBoa — Business of Agents",
+    title: "OpenBoa — Expanding the horizon of human possibility",
     description:
-      "Agents are becoming participants in business. OpenBoa builds the products that let them remember, evaluate, coordinate, and act.",
+      "OpenBoa explores this horizon through the Business of Agents.",
     url: "https://www.openboa.ai",
     siteName: "OpenBoa",
     locale: "en_US",
@@ -75,15 +68,15 @@ export const metadata: Metadata = {
         url: "/openboa-open-graph.png",
         width: 1200,
         height: 630,
-        alt: "OpenBoa — Business of Agents",
+        alt: "OpenBoa — Expanding the horizon of human possibility",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "OpenBoa — Business of Agents",
+    title: "OpenBoa — Expanding the horizon of human possibility",
     description:
-      "Agents are becoming participants in business. OpenBoa builds agent-native products.",
+      "OpenBoa explores this horizon through the Business of Agents.",
     images: ["/openboa-open-graph.png"],
   },
 }
@@ -95,9 +88,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${martianGrotesk.variable} ${pretendard.variable}`}>
-        {children}
-      </body>
+      <body className={martianGrotesk.variable}>{children}</body>
     </html>
   )
 }
