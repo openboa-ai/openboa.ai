@@ -37,12 +37,12 @@ const checks = [
   ["living-scale background is intentionally independent from UI color tokens", !field.includes("OPENBOA_COLORS") && field.includes("APPROVED_BACKGROUND_PAPER")],
   ["approved v33 background restores continuous tonal flow", field.includes("a_weight * 0.04") && field.includes("mix(terracotta100, terracotta500, tone)")],
   [
-    "central title aperture uses the approved 40 percent feather expansion",
+    "central title aperture uses the approved wide horizontal feather expansion",
     [
       "innerEdge: 0.45",
-      "featherXMin: 61.6",
-      "featherXMax: 190.4",
-      "featherXViewportRatio: 0.14875",
+      "featherXMin: 79.2",
+      "featherXMax: 244.8",
+      "featherXViewportRatio: 0.19125",
       "featherYMin: 81.2",
       "featherYMax: 128.8",
       "featherYViewportRatio: 0.100625",

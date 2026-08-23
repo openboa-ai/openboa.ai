@@ -18,9 +18,9 @@ export interface ApertureBounds {
 
 export const QUIET_APERTURE = Object.freeze({
   innerEdge: 0.45,
-  featherXMin: 61.6,
-  featherXMax: 190.4,
-  featherXViewportRatio: 0.14875,
+  featherXMin: 79.2,
+  featherXMax: 244.8,
+  featherXViewportRatio: 0.19125,
   featherYMin: 81.2,
   featherYMax: 128.8,
   featherYViewportRatio: 0.100625,
