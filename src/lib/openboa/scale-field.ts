@@ -1,4 +1,3 @@
-import { OPENBOA_COLORS } from "@/design-system/generated/openboa-token-values"
 import {
   advanceDropdownAperture,
   advanceDropdownColorMix,
@@ -39,6 +38,10 @@ interface ScaleFieldElements {
 }
 
 const EMPTY_BOUNDS: ApertureBounds = { left: 0, top: 0, right: 1, bottom: 1 }
+// The living-scale field is an art-directed image layer, not a semantic UI
+// surface. Keep the approved v33 background calibration independent from the
+// design-token palette so its continuous depth and tonal flow do not quantize.
+const APPROVED_BACKGROUND_PAPER = new Float32Array([0.9725, 0.9725, 0.9608])
 
 function unionTextBounds(elements: Element[], fallback: Element): ApertureBounds {
   const rects: DOMRect[] = []
@@ -245,7 +248,7 @@ export function mountScaleField(elements: ScaleFieldElements) {
       v_angle = (broadA * 0.13 + broadB * 0.08) * ambientMotion + a_interaction.w;
       float macroDensity = 0.5 + 0.5 * sin(position.x * 0.010 + sin(position.y * 0.008 + t * 0.16) * 2.4);
       float crossDensity = 0.5 + 0.5 * cos(position.y * 0.014 - t * 0.14 + a_phase * 0.35);
-      v_tone = 0.08 + macroDensity * 0.20 + crossDensity * 0.07 + a_weight * 0.015;
+      v_tone = 0.08 + macroDensity * 0.20 + crossDensity * 0.07 + a_weight * 0.04;
       v_quiet = a_quiet;
       v_nav_aperture = a_nav_aperture;
     }
@@ -256,25 +259,11 @@ export function mountScaleField(elements: ScaleFieldElements) {
 
     uniform sampler2D u_texture;
     uniform vec3 u_paper_color;
-    uniform vec3 u_scale_0;
-    uniform vec3 u_scale_1;
-    uniform vec3 u_scale_2;
-    uniform vec3 u_scale_3;
-    uniform vec3 u_scale_4;
-    uniform vec3 u_scale_5;
+    uniform float u_quiet_color_mix;
     varying float v_tone;
     varying float v_angle;
     varying float v_quiet;
     varying float v_nav_aperture;
-
-    vec3 scaleColor(float tone) {
-      if (tone < 0.12) return u_scale_0;
-      if (tone < 0.17) return u_scale_1;
-      if (tone < 0.22) return u_scale_2;
-      if (tone < 0.27) return u_scale_3;
-      if (tone < 0.33) return u_scale_4;
-      return u_scale_5;
-    }
 
     void main() {
       vec2 centered = gl_PointCoord - vec2(0.5);
@@ -286,9 +275,13 @@ export function mountScaleField(elements: ScaleFieldElements) {
       float fillAlpha = texture2D(u_texture, uv).a;
       if (fillAlpha <= 0.002) discard;
 
-      float paperMix = max(v_quiet, v_nav_aperture);
-      vec3 color = mix(scaleColor(v_tone), u_paper_color, paperMix);
-      gl_FragColor = vec4(color, fillAlpha);
+      vec3 terracotta100 = vec3(0.9529, 0.8510, 0.8235);
+      vec3 terracotta500 = vec3(0.6510, 0.3098, 0.2353);
+      float tone = smoothstep(0.09, 0.36, v_tone);
+      vec3 scaleColor = mix(terracotta100, terracotta500, tone);
+      float paperMix = max(v_quiet * u_quiet_color_mix, v_nav_aperture);
+      scaleColor = mix(scaleColor, u_paper_color, paperMix);
+      gl_FragColor = vec4(scaleColor, fillAlpha);
     }
   `
 
@@ -344,9 +337,7 @@ export function mountScaleField(elements: ScaleFieldElements) {
   const reducedLocation = uniform("u_reduced")
   const motionFloorLocation = uniform("u_motion_floor")
   const paperColorLocation = uniform("u_paper_color")
-  const scaleColorLocations = [0, 1, 2, 3, 4, 5].map((index) => (
-    uniform(`u_scale_${index}`)
-  ))
+  const quietColorMixLocation = uniform("u_quiet_color_mix")
 
   const seeded = (row: number, column: number) => {
     const value = Math.sin((row + 47) * 61.71 + (column + 29) * 37.19)
@@ -505,14 +496,6 @@ export function mountScaleField(elements: ScaleFieldElements) {
 
   const texture = requireValue(gl.createTexture(), "scale texture")
   const textureImage = new Image()
-  const palette = [
-    OPENBOA_COLORS.terracotta50.rgb,
-    OPENBOA_COLORS.terracotta100.rgb,
-    OPENBOA_COLORS.terracotta200.rgb,
-    OPENBOA_COLORS.terracotta300.rgb,
-    OPENBOA_COLORS.terracotta400.rgb,
-    OPENBOA_COLORS.terracotta500.rgb,
-  ]
 
   const render = (now: number) => {
     if (disposed) return
@@ -554,10 +537,8 @@ export function mountScaleField(elements: ScaleFieldElements) {
     gl.uniform1f(dprLocation, dpr)
     gl.uniform1f(reducedLocation, reducedMotion ? 1 : 0)
     gl.uniform1f(motionFloorLocation, QUIET_APERTURE.motionFloor)
-    gl.uniform3fv(paperColorLocation, new Float32Array(OPENBOA_COLORS.canvas.rgb))
-    scaleColorLocations.forEach((location, index) => {
-      gl.uniform3fv(location, new Float32Array(palette[index]))
-    })
+    gl.uniform3fv(paperColorLocation, APPROVED_BACKGROUND_PAPER)
+    gl.uniform1f(quietColorMixLocation, QUIET_APERTURE.colorMix)
     gl.drawArrays(gl.POINTS, 0, pointCount)
     animationFrame = requestAnimationFrame(render)
   }

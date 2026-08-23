@@ -5,7 +5,8 @@ The official OpenBoa landing page: **Expanding the horizon of human possibility*
 The site consumes a pinned snapshot of the canonical
 [`openboa-brand-system`](https://github.com/openboa-ai/openboa-brand-system)
 tokens. Update the snapshot deliberately, then regenerate the site aliases with
-`pnpm tokens:generate`.
+`pnpm tokens:generate`. The living-scale background remains on its approved v33
+art calibration; design tokens govern the UI layer rather than that image field.
 
 ## Local development
 

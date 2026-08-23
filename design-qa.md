@@ -16,20 +16,22 @@
 - Same-viewport dropdown implementation: `qa/token-integration/implementation-dropdown-1280x720.png`.
 - Combined 2 x 2 comparison: `qa/token-integration/comparison-2x2.png`.
 - Mobile composition harness at 390 x 844: `qa/token-integration/reference-mobile-390x844.png` and `qa/token-integration/implementation-mobile-390x844.png`.
+- Final background opt-out: `qa/token-integration/restored-background-947x1146.jpg`.
+- Final background opt-out with Products open: `qa/token-integration/restored-background-dropdown-947x1146.jpg`.
 
-The combined comparison places the approved reference on the left and the token-integrated implementation on the right. Closed states are on the first row; Products-open states are on the second. All four desktop captures use the same 1280 x 720 viewport.
+The combined comparison documents why the tokenized scale palette was rejected: the approved reference is on the left and the quantized token experiment is on the right. The two final background-opt-out captures supersede the right-hand color treatment while retaining its UI token calibration and layout.
 
 ## Intentional calibration changes
 
-- Background, expression text, body text, accent, type scale, spacing, icon size, motion timing, and breakpoint values now resolve from the canonical OpenBoa token snapshot rather than landing-specific literals.
+- Expression text, body text, accent, type scale, spacing, icon size, motion timing, and breakpoint values resolve from the canonical OpenBoa token snapshot.
 - The hero uses the canonical desktop `display-03` role and mobile `title-02` role. Its darker expression color and more decisive weight are therefore intentional.
-- Scale colors use discrete flat fills from the canonical Terracotta 50–500 palette. Broad spatial flow remains coherent, while the previous pink cast is reduced.
+- The living-scale background deliberately opts out of UI color tokens and restores the approved v33 continuous light-to-Terracotta field. This preserves its softer depth and natural macro flow.
 - The approved composition, copy, logo placement, local apertures, scale overlap, ambient movement, cursor response, dropdown growth, and footer/social structure are preserved.
 
 ## Focused checks
 
 - Typography: Martian Grotesk is the sole UI typeface. Korean-specific font assets were removed as requested. Hero, navigation, product metadata, and footer roles map to generated semantic aliases.
-- Color: authored CSS contains no landing-specific hex values; generated token aliases provide canvas, expression, primary, muted, accent, and scale-palette values.
+- Color: authored CSS contains no landing-specific hex values; generated token aliases provide semantic UI colors. The WebGL scale field carries its documented v33 art calibration separately.
 - Assets: the canonical horizontal logo is reused at full opacity. Chevron, GitHub, X, and antialiased scale-cutout assets are local and resolve without browser errors.
 - Interaction: Products opens on hover and click, remains open while the pointer moves into its links, closes with the intended dimming sequence, and closes on Escape. Cursor interaction and ambient scale movement remain active.
 - Responsive behavior: desktop navigation separates left and right apertures; the mobile header composes into two rows. Hero type, local footer/social apertures, and dropdown sizing remain within the 390 x 844 mobile composition.
