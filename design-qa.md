@@ -6,7 +6,7 @@
 - Preserved rollback branch: `backup/landing-v33-20260823`.
 - Preserved rollback commit: `8bfc4d2`.
 - The archived source and assets are checksum-verified in `rollback/landing-v33/SHA256SUMS.txt` on that branch.
-- Implementation under review: `codex/landing-brand-token-pass`, served from the production build at `http://127.0.0.1:50834/`.
+- Implementation under review: `codex/central-aperture-20`, served from the production build at `http://127.0.0.1:50834/`.
 
 ## Comparison evidence
 
@@ -37,6 +37,14 @@ The combined comparison documents why the tokenized scale palette was rejected: 
 - Responsive behavior: desktop navigation separates left and right apertures; the mobile header composes into two rows. Hero type, local footer/social apertures, and dropdown sizing remain within the 390 x 844 mobile composition.
 - Accessibility: semantic navigation and links remain keyboard-operable, visible focus treatment is present, reduced-motion handling is retained, and decorative canvases are excluded from pointer and accessibility semantics.
 - Browser health: the production build reported no browser warning or error logs after load and dropdown interaction.
+
+## Central title aperture follow-up
+
+- The central title feather is expanded by exactly 20% at every responsive clamp state.
+- The off-white core, contour shape, motion attenuation, colors, and all non-central apertures are unchanged.
+- Closed and Products-open production captures are recorded at `qa/token-integration/central-aperture-20-percent.jpg` and `qa/token-integration/central-aperture-20-percent-dropdown.jpg`.
+- The same-viewport before/after comparison is recorded at `qa/token-integration/central-aperture-comparison-947x1114.jpg`.
+- Browser warning and error logs were empty.
 
 ## Verification
 
