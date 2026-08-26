@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import localFont from "next/font/local"
+import { OpenBoaExperience } from "@/components/openboa-experience"
 import "@/design-system/generated/openboa-tokens.css"
 import "./globals.css"
 
@@ -87,8 +88,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={martianGrotesk.variable}>{children}</body>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <body className={martianGrotesk.variable}>
+        <OpenBoaExperience>{children}</OpenBoaExperience>
+      </body>
     </html>
   )
 }
