@@ -19,7 +19,7 @@
     "test:security": "node scripts/check-security-headers.mjs"
   },
   "dependencies": {
-    "next": "16.3.5",
+    "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
@@ -29,7 +29,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "eslint": "^9.39.3",
-    "eslint-config-next": "16.3.0",
+    "eslint-config-next": "16.4.5",
     "js-yaml": "4.3.2",
     "tailwindcss": "^4.3.3",
     "typescript": "^5"
