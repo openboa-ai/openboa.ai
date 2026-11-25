@@ -33,6 +33,17 @@ const [
   read("public/llms.txt"),
 ])
 
+const llmsCanonicalPaths = new Set(
+  Array.from(llms.matchAll(/https:\/\/[^\s)]+/g), ([raw]) => {
+    try {
+      const parsed = new URL(raw)
+      return parsed.origin === "https://www.openboa.ai" ? parsed.pathname : null
+    } catch {
+      return null
+    }
+  }).filter(Boolean),
+)
+
 const checks = [
   [
     "root layout mounts one persistent OpenBoa provider and shell",
@@ -116,8 +127,9 @@ const checks = [
   [
     "llms.txt publishes canonical vision and route directory",
     llms.includes("Every limit has a shelf life.") &&
-      llms.includes("https://www.openboa.ai/approach") &&
-      llms.includes("https://www.openboa.ai/vision"),
+      llmsCanonicalPaths.has("/") &&
+      llmsCanonicalPaths.has("/approach") &&
+      llmsCanonicalPaths.has("/vision"),
   ],
 ]
 
