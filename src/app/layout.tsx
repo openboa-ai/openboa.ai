@@ -1,42 +1,56 @@
-import type { Metadata } from "next"
-import localFont from "next/font/local"
-import { OpenBoaExperience } from "@/components/openboa-experience"
-import "@/design-system/generated/openboa-tokens.css"
-import "./globals.css"
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import { OpenBoaProvider } from "@/components/openboa-context";
+import { OpenBoaShell } from "@/components/openboa-shell";
+import { EXTERNAL_LINKS, OPENBOA_VISION, SITE_URL } from "@/lib/brand";
+import "@/design-system/generated/openboa-tokens.css";
+import "./globals.css";
 
-const martianGrotesk = localFont({
-  src: "../../public/fonts/MartianGrotesk-wdth-wght.ttf",
-  variable: "--font-martian-grotesk",
+const rethinkSans = localFont({
+  src: [
+    {
+      path: "../../public/fonts/rethink-sans/rethink-sans.woff2",
+      weight: "400 800",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/rethink-sans/rethink-sans-italic.woff2",
+      weight: "400 800",
+      style: "italic",
+    },
+  ],
+  variable: "--font-rethink-sans",
   display: "swap",
-  weight: "100 1000",
-})
+});
+
+const SITE_TITLE = `OpenBoa — ${OPENBOA_VISION.headline}`;
+const SITE_DESCRIPTION = OPENBOA_VISION.statement;
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.openboa.ai"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "OpenBoa — Expanding the horizon of human possibility",
+    default: SITE_TITLE,
     template: "%s — OpenBoa",
   },
-  description:
-    "OpenBoa explores the horizon of human possibility through the Business of Agents.",
+  description: SITE_DESCRIPTION,
   applicationName: "OpenBoa",
-  authors: [{ name: "OpenBoa", url: "https://www.openboa.ai" }],
+  authors: [{ name: "OpenBoa", url: SITE_URL }],
   creator: "OpenBoa",
   publisher: "OpenBoa",
   category: "technology",
   keywords: [
     "OpenBoa",
-    "Business of Agents",
-    "agent-native business",
-    "AI agents",
-    "human possibility",
-    "human creation",
+    "Every limit has a shelf life",
+    "human imagination",
+    "autonomous systems",
+    "open source",
   ],
   alternates: {
     canonical: "/",
   },
   icons: {
     icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
@@ -58,10 +72,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "OpenBoa — Expanding the horizon of human possibility",
-    description:
-      "OpenBoa explores this horizon through the Business of Agents.",
-    url: "https://www.openboa.ai",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
     siteName: "OpenBoa",
     locale: "en_US",
     images: [
@@ -69,29 +82,63 @@ export const metadata: Metadata = {
         url: "/openboa-open-graph.png",
         width: 1200,
         height: 630,
-        alt: "OpenBoa — Expanding the horizon of human possibility",
+        alt: SITE_TITLE,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "OpenBoa — Expanding the horizon of human possibility",
-    description:
-      "OpenBoa explores this horizon through the Business of Agents.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: ["/openboa-open-graph.png"],
   },
-}
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "OpenBoa",
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon-512.png`,
+      description: SITE_DESCRIPTION,
+      sameAs: [EXTERNAL_LINKS.github, EXTERNAL_LINKS.x],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "OpenBoa",
+      description: SITE_DESCRIPTION,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      inLanguage: "en",
+    },
+  ],
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
-      <body className={martianGrotesk.variable}>
-        <OpenBoaExperience>{children}</OpenBoaExperience>
+    <html
+      lang="en"
+      className={`${rethinkSans.variable} yg-root`}
+      data-appearance="light"
+      suppressHydrationWarning
+    >
+      <body className="antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        <OpenBoaProvider>
+          <OpenBoaShell>{children}</OpenBoaShell>
+        </OpenBoaProvider>
       </body>
     </html>
-  )
+  );
 }

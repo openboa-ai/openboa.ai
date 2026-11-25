@@ -1,4 +1,5 @@
-import type { MetadataRoute } from "next"
+import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/brand";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,11 +9,17 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
       {
-        userAgent: ["GPTBot", "OAI-SearchBot", "ChatGPT-User"],
+        userAgent: [
+          "GPTBot",
+          "OAI-SearchBot",
+          "ChatGPT-User",
+          "ClaudeBot",
+          "PerplexityBot",
+        ],
         allow: "/",
       },
     ],
-    sitemap: "https://www.openboa.ai/sitemap.xml",
-    host: "https://www.openboa.ai",
-  }
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
+  };
 }

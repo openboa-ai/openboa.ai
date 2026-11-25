@@ -1,25 +1,27 @@
-import type { MetadataRoute } from "next"
+import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/brand";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const lastModified = new Date("2026-11-25T00:00:00.000Z");
   return [
     {
-      url: "https://www.openboa.ai/",
-      lastModified: new Date("2026-08-24T00:00:00.000Z"),
+      url: `${SITE_URL}/`,
+      lastModified,
       changeFrequency: "monthly",
       priority: 1,
-      images: ["https://www.openboa.ai/openboa-open-graph.png"],
+      images: [`${SITE_URL}/openboa-open-graph.png`],
     },
     {
-      url: "https://www.openboa.ai/vision",
-      lastModified: new Date("2026-08-24T00:00:00.000Z"),
+      url: `${SITE_URL}/approach`,
+      lastModified,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
     },
     {
-      url: "https://www.openboa.ai/about",
-      lastModified: new Date("2026-08-24T00:00:00.000Z"),
+      url: `${SITE_URL}/vision`,
+      lastModified,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
     },
-  ]
+  ];
 }

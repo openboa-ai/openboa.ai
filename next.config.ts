@@ -30,6 +30,15 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/about",
+        destination: "/vision",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

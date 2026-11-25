@@ -1,16 +1,16 @@
-import type { MetadataRoute } from "next"
-import { OPENBOA_COLORS } from "@/design-system/generated/openboa-token-values"
+import type { MetadataRoute } from "next";
+import { OPENBOA_COLORS } from "@/design-system/generated/openboa-token-values";
+import { OPENBOA_VISION } from "@/lib/brand";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "OpenBoa — Expanding the horizon of human possibility",
+    name: `OpenBoa — ${OPENBOA_VISION.headline}`,
     short_name: "OpenBoa",
-    description:
-      "OpenBoa explores the horizon of human possibility through the Business of Agents.",
+    description: OPENBOA_VISION.statement,
     start_url: "/",
     display: "standalone",
-    background_color: OPENBOA_COLORS.canvas.hex,
-    theme_color: OPENBOA_COLORS.canvas.hex,
+    background_color: OPENBOA_COLORS.surfaceLight,
+    theme_color: OPENBOA_COLORS.brandInkLight,
     icons: [
       {
         src: "/icon-192.png",
@@ -35,5 +35,5 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: "maskable",
       },
     ],
-  }
+  };
 }
