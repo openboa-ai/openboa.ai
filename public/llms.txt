@@ -1,16 +1,21 @@
 # OpenBoa
 
-> OpenBoa is an agent-native product organization building products for the Business of Agents.
+> Every limit has a shelf life.
 
-OpenBoa builds products that let agents remember, evaluate, coordinate, and act.
+Nothing is permanently out of reach. OpenBoa exists to break what stands between imagination and reality.
+
+## Primary pages
+
+- Home: https://www.openboa.ai/
+- Approach (How walls give way): https://www.openboa.ai/approach
+- Vision (Nothing is permanently out of reach): https://www.openboa.ai/vision
 
 ## Canonical links
 
 - Website: https://www.openboa.ai/
 - GitHub organization: https://github.com/openboa-ai
-- coffee-chat: https://github.com/openboa-ai/coffee-chat
-- coffee-chat-eval: https://github.com/openboa-ai/coffee-chat-eval
+- X: https://x.com/openboa_ai
 
-## Brand statement
+## Vision & Approach summary
 
-Business of Agents describes a future in which agents become participants in business. OpenBoa focuses on the product infrastructure required for durable memory, evaluation, coordination, and action.
+Most ceilings survive out of habit rather than natural law. OpenBoa builds environments that collapse coordination drag, operate continuously under clear human authority, separate human purpose from repetitive toil, and prove boundaries by crossing them in the open.
