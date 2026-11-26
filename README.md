@@ -1,8 +1,10 @@
+<img src="src/app/icon.svg" alt="OpenBoa mark" width="80">
+
 # OpenBoa.ai
 
 Every limit has a shelf life.
 
-The official website for OpenBoa (`openboa.ai`). Built with Next.js, React, `@openboa/yogurt`, Three.js, GSAP, and Lenis, the site pairs a persistent interactive 3D field of instanced Upright 9 marks with OpenBoa's vision and approach across `/`, `/approach`, and `/vision`.
+The official website for OpenBoa ([openboa.ai](https://openboa.ai)). Built with Next.js, React, `@openboa/yogurt`, Three.js, GSAP, and Lenis, the site pairs a persistent interactive 3D field of instanced Upright 9 marks with OpenBoa's vision and approach across `/`, `/approach`, and `/vision`.
 
 ## Local development
 
