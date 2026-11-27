@@ -1,10 +1,11 @@
 # OpenBoa main website redesign
 
-Status: accepted, revision 1. User-approved visual and functional design baseline
+Status: accepted, revision 2. User-approved visual and functional design baseline
 established via interactive desktop and mobile preview review on 2026-11-25,
-recorded before production repository edits. Local implementation and verification
-proceed in an isolated worktree; push, merge, release and deployment remain
-separate human decisions.
+updated on 2026-11-27 to weave OpenBoa's name origin (**Open Business of Agents**)
+naturally into `/approach`, `/vision`, and site metadata while keeping `/` Act 01
+pure. Local implementation and verification proceed in an isolated worktree;
+push, merge, release and deployment remain separate human decisions.
 
 ## Intent and baseline
 
@@ -24,10 +25,13 @@ OpenBoa's updated canonical vision messaging across three primary routes:
   Act 01 includes a minimal whisper-quiet `"Hold anywhere"` interaction cue and
   no duplicate navigation CTA. Act 02 links to `/approach`. Act 03 links to
   `/vision` and OpenBoa's GitHub organization (`https://github.com/openboa-ai`).
-- `/approach` (**Approach**): `"How walls give way."` — four operational pillars
+- `/approach` (**Approach**): `"How walls give way."` — frames the **Business of
+  Agents** as how boundaries give way today, followed by four operational pillars
   paired with a dedicated rectilinear 3D breached-portal topology.
 - `/vision` (**Vision**): `"Nothing is permanently out of reach."` — four core
-  principles paired with a right-anchored 3D meridian sphere topology.
+  principles plus an understated `"THE NAME // OPEN + BOA"` editorial colophon
+  (**Open Business of Agents**) separating permanent purpose from current
+  practice, paired with a right-anchored 3D meridian sphere topology.
 
 Existing inbound links to `/about` permanently redirect (`308`) to `/vision`.
 No product showcase or catalog grid is presented on `openboa.ai`; repository

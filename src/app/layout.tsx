@@ -40,6 +40,8 @@ export const metadata: Metadata = {
   category: "technology",
   keywords: [
     "OpenBoa",
+    "Business of Agents",
+    "Open Business of Agents",
     "Every limit has a shelf life",
     "human imagination",
     "autonomous systems",
@@ -101,6 +103,8 @@ const structuredData = {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "OpenBoa",
+      alternateName: "Open Business of Agents",
+      slogan: OPENBOA_VISION.headline,
       url: SITE_URL,
       logo: `${SITE_URL}/icon-512.png`,
       description: SITE_DESCRIPTION,
