@@ -125,6 +125,13 @@ const checks = [
       !sitemap.includes("/pattern"),
   ],
   [
+    "Home Act 01 renders the single first-entry OPENBOA -> BUSINESS OF AGENTS eyebrow morph while keeping header lockup uncluttered",
+    homeView.includes("<OpenBoaBrandMorph") &&
+      !hud.includes("<OpenBoaBrandMorph") &&
+      css.includes(".boa-eyebrow-prefix") &&
+      css.includes(".boa-eyebrow-tail"),
+  ],
+  [
     "Vision view includes the Open + Boa name-origin colophon",
     visionView.includes("openboa-name-origin") &&
       visionView.includes("OPENBOA_VISION.nameOrigin"),

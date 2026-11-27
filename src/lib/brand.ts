@@ -171,8 +171,8 @@ export const OPENBOA_VISION = {
     eyebrow: "THE NAME // OPEN + BOA",
     prefix: "Open",
     root: "Boa",
-    expansion: "Open Business of Agents",
-    body: "Breaking limits is our permanent purpose. Building the open Business of Agents is how we put it to work—companies and systems where human direction meets continuous autonomous execution.",
+    expansion: "Business of Agents",
+    body: "Breaking limits is our permanent purpose. We put it to work by building the Business of Agents in the open—companies and systems where human direction meets continuous autonomous execution.",
   },
   approach: {
     eyebrow: "OPENBOA // APPROACH",
