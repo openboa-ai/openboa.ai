@@ -4,6 +4,10 @@
 
 Nothing is permanently out of reach. OpenBoa exists to break what stands between imagination and reality.
 
+## The name
+
+OpenBoa pairs **Open** with **Boa** — short for **Business of Agents**. Breaking limits is OpenBoa's permanent purpose; building the open Business of Agents is how we put it to work through companies and systems where human direction meets continuous autonomous execution.
+
 ## Primary pages
 
 - Home: https://www.openboa.ai/
@@ -18,4 +22,4 @@ Nothing is permanently out of reach. OpenBoa exists to break what stands between
 
 ## Vision & Approach summary
 
-Most ceilings survive out of habit rather than natural law. OpenBoa builds environments that collapse coordination drag, operate continuously under clear human authority, separate human purpose from repetitive toil, and prove boundaries by crossing them in the open.
+Most ceilings survive out of habit rather than natural law. Today, OpenBoa advances its vision through the Business of Agents—building environments that collapse coordination drag, operate continuously under clear human authority, separate human purpose from repetitive toil, and prove boundaries by crossing them in the open.

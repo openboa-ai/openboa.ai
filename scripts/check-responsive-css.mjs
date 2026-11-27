@@ -125,8 +125,14 @@ const checks = [
       !sitemap.includes("/pattern"),
   ],
   [
-    "llms.txt publishes canonical vision and route directory",
+    "Vision view includes the Open + Boa name-origin colophon",
+    visionView.includes("openboa-name-origin") &&
+      visionView.includes("OPENBOA_VISION.nameOrigin"),
+  ],
+  [
+    "llms.txt publishes canonical vision, Business of Agents origin, and route directory",
     llms.includes("Every limit has a shelf life.") &&
+      llms.includes("Business of Agents") &&
       llmsCanonicalPaths.has("/") &&
       llmsCanonicalPaths.has("/approach") &&
       llmsCanonicalPaths.has("/vision"),

@@ -70,8 +70,54 @@ export function OpenBoaVisionView() {
           ))}
         </div>
 
+        <section
+          aria-labelledby="openboa-name-origin"
+          className="py-9 sm:py-10"
+          style={{ borderTop: "1px solid var(--yg-border-subtle)" }}
+        >
+          <div
+            className="mono-telemetry text-[11px] uppercase"
+            style={{ color: "var(--yg-brand-ink)", textShadow }}
+          >
+            {OPENBOA_VISION.nameOrigin.eyebrow}
+          </div>
+
+          <h2
+            id="openboa-name-origin"
+            className="display-headline mt-3.5 mb-0 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[clamp(1.45rem,2.6vw,2.05rem)] leading-[1.12] tracking-[-0.03em]"
+            style={{ color: "var(--yg-text)", textShadow }}
+          >
+            <span>
+              {OPENBOA_VISION.nameOrigin.prefix}
+              <span style={{ color: "var(--yg-brand-ink)" }}>
+                {OPENBOA_VISION.nameOrigin.root}
+              </span>
+            </span>
+            <span
+              className="text-[0.82em] font-normal"
+              style={{ color: "var(--yg-text-muted)" }}
+              aria-hidden="true"
+            >
+              —
+            </span>
+            <span
+              className="text-[clamp(1.08rem,1.6vw,1.34rem)] tracking-[-0.015em]"
+              style={{ fontWeight: 480, color: bodyInk }}
+            >
+              {OPENBOA_VISION.nameOrigin.expansion}
+            </span>
+          </h2>
+
+          <p
+            className="editorial-lead mt-3.5 mb-0 text-[clamp(0.96rem,1.1vw,1.06rem)] leading-[1.6]"
+            style={{ color: "var(--yg-text-muted)", textShadow }}
+          >
+            {OPENBOA_VISION.nameOrigin.body}
+          </p>
+        </section>
+
         <div
-          className="mt-4 pt-9 flex flex-wrap items-center gap-4"
+          className="pt-9 flex flex-wrap items-center gap-4"
           style={{ borderTop: "1px solid var(--yg-border-subtle)" }}
         >
           <a

@@ -167,10 +167,17 @@ export const OPENBOA_VISION = {
       body: "Ideas prove themselves in real systems, not manifestos alone. Follow what we build and break directly on GitHub.",
     },
   ],
+  nameOrigin: {
+    eyebrow: "THE NAME // OPEN + BOA",
+    prefix: "Open",
+    root: "Boa",
+    expansion: "Open Business of Agents",
+    body: "Breaking limits is our permanent purpose. Building the open Business of Agents is how we put it to work—companies and systems where human direction meets continuous autonomous execution.",
+  },
   approach: {
     eyebrow: "OPENBOA // APPROACH",
     headline: "How walls give way.",
-    lead: "Breaking a boundary is never luck. It is the result of changing the underlying structure of how work, intelligence, and ownership operate.",
+    lead: "Breaking a boundary is never luck. Today, we do it through the Business of Agents—changing the underlying structure of how work, ownership, and execution operate.",
     pillars: [
       {
         code: "01",

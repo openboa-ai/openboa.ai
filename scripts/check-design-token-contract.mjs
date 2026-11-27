@@ -66,11 +66,13 @@ const checks = [
     iconHash === "48f80de860ae85f0f2801fe91d02dde49d7ffd25b22c81061ad2c41ac43b5155",
   ],
   [
-    "canonical vision statement is authored in brand module",
+    "canonical vision statement and Business of Agents origin are authored in brand module",
     brand.includes("Every limit has a shelf life.") &&
       brand.includes(
         "Nothing is permanently out of reach. OpenBoa exists to break what stands between imagination and reality.",
-      ),
+      ) &&
+      brand.includes("Open Business of Agents") &&
+      brand.includes("Business of Agents"),
   ],
   [
     "English-only typography excludes Pretendard and retired font assets",
