@@ -9,6 +9,7 @@ import { useGSAP } from "@gsap/react";
 import { Button } from "@openboa/yogurt";
 import { EXTERNAL_LINKS, OPENBOA_VISION } from "@/lib/brand";
 import { useOpenBoa } from "@/components/openboa-context";
+import { OpenBoaBrandMorph } from "@/components/openboa-brand-morph";
 import { HoldToBreakControl } from "@/components/vision-controls";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -76,11 +77,12 @@ export function OpenBoaHomeView() {
         className="min-h-[100dvh] w-full flex flex-col justify-center px-5 sm:px-8 md:px-12 pt-36 md:pt-28 pb-24"
       >
         <div className="max-w-[1280px] w-full mx-auto">
-          <div
-            className="mb-4 sm:mb-5 mono-telemetry text-[11px] uppercase"
-            style={{ color: "var(--yg-brand-ink)", textShadow }}
-          >
-            {`${act1.code} // ${act1.label}`}
+          <div className="mb-4 sm:mb-5">
+            <OpenBoaBrandMorph
+              code={act1.code}
+              className="text-[12px] sm:text-[13px]"
+              textShadow={textShadow}
+            />
           </div>
 
           <h1

@@ -71,8 +71,8 @@ const checks = [
       brand.includes(
         "Nothing is permanently out of reach. OpenBoa exists to break what stands between imagination and reality.",
       ) &&
-      brand.includes("Open Business of Agents") &&
-      brand.includes("Business of Agents"),
+      brand.includes("Business of Agents") &&
+      !brand.includes("Open Business of Agents"),
   ],
   [
     "English-only typography excludes Pretendard and retired font assets",

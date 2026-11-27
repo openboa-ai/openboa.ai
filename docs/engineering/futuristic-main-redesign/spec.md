@@ -1,11 +1,15 @@
 # OpenBoa main website redesign
 
-Status: accepted, revision 2. User-approved visual and functional design baseline
+Status: accepted, revision 3. User-approved visual and functional design baseline
 established via interactive desktop and mobile preview review on 2026-11-25,
-updated on 2026-11-27 to weave OpenBoa's name origin (**Open Business of Agents**)
-naturally into `/approach`, `/vision`, and site metadata while keeping `/` Act 01
-pure. Local implementation and verification proceed in an isolated worktree;
-push, merge, release and deployment remain separate human decisions.
+updated on 2026-11-27 to weave OpenBoa's name origin (**Boa** = **Business of
+Agents**) cleanly into `/approach`, `/vision`, site metadata, and a single
+first-entry Act 01 kinetic eyebrow morph (`01 // OPENBOA` → `01 // BUSINESS OF
+AGENTS`, where `OPEN` appears in the abbreviated form and folds away as `BOA`
+unfolds into `BUSINESS OF AGENTS`) while keeping the header lockup and 3-act
+Home rhythm uncluttered. Local implementation and verification proceed in an
+isolated worktree; push, merge, release and deployment remain separate human
+decisions.
 
 ## Intent and baseline
 
@@ -30,7 +34,7 @@ OpenBoa's updated canonical vision messaging across three primary routes:
   paired with a dedicated rectilinear 3D breached-portal topology.
 - `/vision` (**Vision**): `"Nothing is permanently out of reach."` — four core
   principles plus an understated `"THE NAME // OPEN + BOA"` editorial colophon
-  (**Open Business of Agents**) separating permanent purpose from current
+  (**OpenBoa — Business of Agents**) separating permanent purpose from current
   practice, paired with a right-anchored 3D meridian sphere topology.
 
 Existing inbound links to `/about` permanently redirect (`308`) to `/vision`.
